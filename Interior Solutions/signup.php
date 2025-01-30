@@ -1,4 +1,6 @@
 <?php
+$registration_message = "";
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = htmlspecialchars($_POST['username']);
     $email = htmlspecialchars($_POST['email']);
@@ -7,44 +9,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Validate passwords
     if ($password !== $confirm_password) {
-        echo "<p style='color: red;'>Passwords do not match. Please try again.</p>";
-        exit();
-    }
-
-    // Hash password
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-    // Database connection
-    $conn = new mysqli('localhost', 'root', '', 'interior_solutions');
-
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    // Check if email already exists
-    $sql = "SELECT * FROM users WHERE email = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param('s', $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        echo "<p style='color: red;'>Email is already registered. Please try another.</p>";
+        $registration_message = "<p style='color: red; text-align: center;'>Passwords do not match. Please try again.</p>";
     } else {
-        // Insert user into database
-        $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param('sss', $username, $email, $hashed_password);
+        // Hash password
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-        if ($stmt->execute()) {
-            echo "<p style='color: green;'>Registration successful! You can now log in.</p>";
-        } else {
-            echo "<p style='color: red;'>An error occurred. Please try again.</p>";
+        // Database connection
+        $conn = new mysqli('localhost', 'root', '', 'interior_solutions');
+
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
         }
-    }
 
-    $stmt->close();
-    $conn->close();
+        // Check if email already exists
+        $sql = "SELECT * FROM users WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('s', $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $registration_message = "<p style='color: red; text-align: center;'>Email is already registered. Please try another.</p>";
+        } else {
+            // Insert user into database
+            $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('sss', $username, $email, $hashed_password);
+
+            if ($stmt->execute()) {
+                $registration_message = "<p style='color: green; text-align: center;'>Registration successful! You can now log in.</p>";
+            } else {
+                $registration_message = "<p style='color: red; text-align: center;'>An error occurred. Please try again.</p>";
+            }
+        }
+
+        $stmt->close();
+        $conn->close();
+    }
 }
 ?>
 
@@ -60,47 +61,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            background: #f4f4f4;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                        url('https://artificialpaintings.com/wp-content/uploads/2024/06/1616_interior_architect.webp') no-repeat center center/cover;
             color: #333;
-        }
-
-        .signup-container {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
-                        url('https://artificialpaintings.com/wp-content/uploads/2024/06/1616_interior_architect.webp') no-repeat center center/cover;
-            padding: 20px;
         }
 
-        .signup-form {
+        .signup-container {
             background: rgba(255, 255, 255, 0.9);
-            padding: 40px;
-            border-radius: 15px;
+            padding: 30px;
+            border-radius: 10px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
             max-width: 400px;
             width: 100%;
+            text-align: center;
         }
 
-        .signup-form h2 {
+        .signup-container img.logo {
+            max-width: 100px;
+            margin-bottom: 15px;
+        }
+
+        .signup-container h1 {
+            font-size: 24px;
             margin-bottom: 20px;
-            font-size: 28px;
-            text-align: center;
             color: #2c3e50;
         }
 
         .signup-form label {
             display: block;
-            margin-bottom: 8px;
+            text-align: left;
             font-weight: bold;
             color: #34495e;
+            margin-bottom: 5px;
+            font-size: 13px;
         }
 
         .signup-form input {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
+            padding: 8px;
+            margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 8px;
             background: #f9f9f9;
@@ -115,50 +118,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .signup-form button {
             width: 100%;
             padding: 12px;
-            background-color:rgb(27, 40, 42);
+            background-color: rgb(27, 40, 42);
             color: #fff;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 14px;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
         .signup-form button:hover {
-            background-color: #2980b9;
+            background-color: rgb(66, 119, 121);
         }
 
         .signup-form p {
             text-align: center;
-            margin-top: 15px;
+            margin-top: 10px;
+            font-size: 12px;
             color: #7f8c8d;
         }
 
         .signup-form p a {
-            color:rgb(42, 63, 78);
+            color: rgb(42, 63, 78);
             text-decoration: none;
         }
 
         .signup-form p a:hover {
             text-decoration: underline;
         }
-
-        @media (max-width: 768px) {
-            .signup-form {
-                padding: 30px;
-            }
-
-            .signup-form h2 {
-                font-size: 24px;
-            }
-        }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="signup-container">
+        <!-- Add your logo -->
+        <img src="img/logo.jpg" alt="Logo" class="logo"> <!-- Replace 'logo.png' with the path to your logo -->
+
+        <!-- Website name -->
+        <h1>Interior Solutions</h1>
+
         <form class="signup-form" action="signup.php" method="POST">
-            <h2>Create Your Account</h2>
+            <?php echo $registration_message; ?>
             <label for="username">Full Name</label>
             <input type="text" id="username" name="username" placeholder="Enter your full name" required>
 
@@ -172,7 +171,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
 
             <button type="submit">Sign Up</button>
-
             <p>Already have an account? <a href="login.php">Login here</a></p>
         </form>
     </div>

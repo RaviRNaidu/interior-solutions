@@ -1,19 +1,9 @@
-<?php
-session_start();
-
-// Check if the user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interior Solutions</title>
+    <title>contact</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
         body {
@@ -69,11 +59,15 @@ if (!isset($_SESSION['user_id'])) {
             background-color:rgb(66, 119, 121);
         }
 
+        nav a.active {
+            font-weight: bold;
+            text-decoration: underline;
+        }
         .hero {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: url('img/dashboard.jpg') no-repeat center center/cover;
+            background: url('img/contact.jpg') no-repeat center center/cover;
             padding: 100px 50px;
             height: 60vh;
             color: white;
@@ -103,67 +97,76 @@ if (!isset($_SESSION['user_id'])) {
         }
 
         .hero p {
-            font-size: 18px;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        .contact-container {
+            padding: 50px 20px;
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .contact-form {
+            flex: 1;
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .contact-form h3 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .contact-form input, 
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .contact-form button {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .contact-form button:hover {
+            background-color: #555;
+        }
+
+        .contact-details {
+            flex: 1;
+        }
+
+        .contact-details h3 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
             margin-bottom: 20px;
         }
 
-        .hero .btn {
-            padding: 10px 20px;
-            background-color: #fff;
+        .contact-item i {
+            font-size: 20px;
             color: #333;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 4px;
+            margin-right: 15px;
         }
 
-        .spotlight {
-            padding: 50px 30px;
-            background-color: #f9f9f9;
-        }
-
-        .spotlight h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 28px;
-            color: #444;
-        }
-
-        .products {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .product {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .product img {
-            width: 100%;
-            height: auto;
-        }
-
-        .product .info {
-            padding: 15px;
-            text-align: center;
-        }
-
-        .product .info h3 {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-
-        .product .info p {
+        .contact-item p {
+            margin: 0;
             font-size: 14px;
-            color: #666;
-        }
-
-        .product .info .price {
-            font-weight: bold;
-            margin-top: 10px;
+            color: #555;
         }
 
         footer {
@@ -314,58 +317,53 @@ footer .footer-bottom .social-links a img:hover {
 </head>
 <body>
     <header>
-        <div class="logo">
-            <a href="#"><img src="img/interior.png" alt="Interior Solutions Logo"></a>
-        </div>
-        <nav>
-            <a href="#">Home</a>
-            <a href="about_us.php">About Us</a>
-            <a href="what_we_do.php">What We Do</a>
-            <a href="product.php">Product</a>
-            <a href="gallery.php">Gallery</a>
-            <a href="contact.php">Contact</a>
-        </nav>
-        <a href="logout.php" class="logout-btn">Logout</a>
+    <div class="logo">
+        <a href="dashboard.php"><img src="img/interior.png" alt="Interior Solutions Logo"></a>
+    </div>
+    <nav>
+        <a href="dashboard.php">Home</a>
+        <a href="about_us.php" >About Us</a>
+        <a href="what_we_do.php">What We Do</a>
+        <a href="product.php">Product</a>
+        <a href="gallery.php">Gallery</a>
+        <a href="contact.php" class="active">Contact</a>
+    </nav>
+    <a href="logout.php" class="logout-btn">Logout</a>
     </header>
-
     <div class="hero">
         <div class="text">
-            <h1>Interior Solutions</h1>
-            <p>Feel free to browse our shop and choose what you like for your home.</p>
-            <a href="#" class="btn">Shop Now</a>
+            <h1>LEADING INTERIOR</h1>
+            <p>Company In India</p>
         </div>
     </div>
-
-    <div class="spotlight">
-        <h2>In the Spotlight</h2>
-        <div class="products">
-            <div class="product">
-                <img src="img/dashboard1.jpg" alt="Product 1">
-                <div class="info">
-                    <h3>LCD Display Unit</h3>
-                    <p>LCD Display Unit will be a centre of attraction in any living room when it is beautifully designed and made in theme matching the whole interiors.</p>
-                    <div class="price">$29.99</div>
-                </div>
-            </div>
-            <div class="product">
-                <img src="img/dashboard2.jpg" alt="Product 2">
-                <div class="info">
-                    <h3>Chairs</h3>
-                    <p>Interior solutions can give you tailor-made chairs to complement your living rooms with the contemporary flourish you always dreamed of.</p>
-                    <div class="price">$39.99</div>
-                </div>
-            </div>
-            <div class="product">
-                <img src="https://images.livspace-cdn.com/w:3840/plain/https://d3gq2merok8n5r.cloudfront.net/abhinav/ond-1634120396-Obfdc/ond-2024-1727950725-vfT46/living-1728890772-3eAJ0/living-room-2-1730103654-KJKlz.jpg" alt="Product 3">
-                <div class="info">
-                    <h3>Sofas</h3>
-                    <p>Interior Solutions can either make or buy a suitable sofa set for your living room as part of the interior works contract.</p>
-                    <div class="price">$49.99</div>
-                </div>
-            </div>
+    <section class="contact-container">
+    <div class="contact-form">
+        <h3>Get in Touch</h3>
+        <form>
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <input type="text" name="subject" placeholder="Subject">
+            <textarea name="message" rows="5" placeholder="Your Message"></textarea>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <div class="contact-details">
+        <h3>Contact Details</h3>
+        <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <p>123 Interior Street, Home City, Country</p>
+        </div>
+        <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <p>contact@interiorsolutions.com</p>
+        </div>
+        <div class="contact-item">
+            <i class="fas fa-phone-alt"></i>
+            <p>+1 123 456 7890</p>
         </div>
     </div>
-    <footer>
+</section>
+<footer>
     <div class="footer-top">
         <div class="container">
             <div class="row">
@@ -446,4 +444,79 @@ footer .footer-bottom .social-links a img:hover {
 </div>
 </footer>
 </body>
-</html>
+</html>  
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style> -->
+        
+        
+    <!-- </style>
+</head>
+<body>
+<header>
+    <div class="logo">
+        <a href="dashboard.php"><img src="img/interior.png" alt="Interior Solutions Logo"></a>
+    </div>
+    <nav>
+        <a href="dashboard.php">Home</a>
+        <a href="about_us.php">About Us</a>
+        <a href="what_we_do.php">What We Do</a>
+        <a href="product.php">Product</a>
+        <a href="gallery.php">Gallery</a>
+        <a href="contact.php" class="active">Contact</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="text">
+        <h2>Contact Us</h2>
+        <p>Home > Contact Page</p>
+    </div>
+</section>
+
+<section class="contact-container">
+    <div class="contact-form">
+        <h3>Get in Touch</h3>
+        <form>
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <input type="text" name="subject" placeholder="Subject">
+            <textarea name="message" rows="5" placeholder="Your Message"></textarea>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <div class="contact-details">
+        <h3>Contact Details</h3>
+        <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <p>123 Interior Street, Home City, Country</p>
+        </div>
+        <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <p>contact@interiorsolutions.com</p>
+        </div>
+        <div class="contact-item">
+            <i class="fas fa-phone-alt"></i>
+            <p>+1 123 456 7890</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2021 Home Interior. All Rights Reserved.</p>
+</footer>
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html> -->
+
+        
+
+
+
