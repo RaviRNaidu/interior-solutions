@@ -2,45 +2,46 @@
 session_start();
 $message = "";
 
-if (!isset($_SESSION['email'])) {
-    // Redirect to forgot_password if email is not set
-    header('Location: forgot_password.php');
-    exit();
-}
-
+// Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $new_password = htmlspecialchars($_POST['new_password']);
-    $confirm_password = htmlspecialchars($_POST['confirm_password']);
-    $email = $_SESSION['email'];
+    $entered_otp = htmlspecialchars($_POST['otp']);
+    $email = $_SESSION['email'] ?? "";
 
-    if ($new_password !== $confirm_password) {
-        $message = "<p style='color: red; text-align: center;'>Passwords do not match. Please try again.</p>";
-    } else {
-        // Hash the password
-        $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-
-        // Database connection
-        $conn = new mysqli('localhost', 'root', '', 'interior_solutions');
-
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
-
-        // Update password in the database
-        $sql = "UPDATE users SET password = ?, otp = NULL WHERE email = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param('ss', $hashed_password, $email);
-
-        if ($stmt->execute()) {
-            $message = "<p style='color: green; text-align: center;'>Password updated successfully. <a href='login.php'>Login now</a></p>";
-            unset($_SESSION['email']); // Clear the email session
-        } else {
-            $message = "<p style='color: red; text-align: center;'>Error updating password. Please try again.</p>";
-        }
-
-        $stmt->close();
-        $conn->close();
+    if (empty($email)) {
+        header("Location: forgot_password.php");
+        exit();
     }
+
+    // Database connection
+    $conn = new mysqli('localhost', 'root', '', 'interior_solutions');
+
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // Check if OTP is valid for the email
+    $sql = "SELECT * FROM users WHERE email = ? AND otp = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('ss', $email, $entered_otp);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        // OTP verified successfully, clear OTP from the database
+        $sql = "UPDATE users SET otp = NULL WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('s', $email);
+        $stmt->execute();
+
+        // Redirect to reset password page
+        header("Location: reset_password.php");
+        exit();
+    } else {
+        $message = "<p style='color: red; text-align: center;'>Invalid OTP. Please try again.</p>";
+    }
+
+    $stmt->close();
+    $conn->close();
 }
 ?>
 
@@ -49,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Password</title>
+    <title>Verify OTP</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
         body {
@@ -83,6 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .login-form h2 {
             margin-bottom: 15px;
             font-size: 26px;
+            text-align: center;
             color: #2c3e50;
         }
 
@@ -171,21 +173,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
     <div class="login-container">
-        <form class="login-form" action="reset_password.php" method="POST">
+        <form class="login-form" action="verify_otp.php" method="POST">
             <div class="logo-container">
                 <img src="img/logo.jpg" alt="Website Logo">
                 <h1>Interior Solutions</h1>
             </div>
-            <center><h2>Reset Password</h2></center>
+            <h2>Verify OTP</h2>
             <?php echo $message; ?>
-            
-            <label for="new_password">New Password</label>
-            <input type="password" id="new_password" name="new_password" placeholder="Enter new password" required>
-
-            <label for="confirm_password">Confirm Password</label>
-            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
-
-            <button type="submit">Change Password</button>
+            <label for="otp">OTP</label>
+            <input type="text" id="otp" name="otp" placeholder="Enter the OTP sent to your email" required>
+            <button type="submit">Verify OTP</button>
         </form>
     </div>
 </body>

@@ -28,20 +28,70 @@
 
         nav {
             display: flex;
-            gap: 15px;
+            align-items: center;
+            justify-content: space-evenly;
+            background-color: #f5f5f5;
+            padding: 5px 0;
+            height: 50px;
         }
 
-        nav a {
+        nav a, .dropdown {
             text-decoration: none;
             color: #444;
             font-weight: 500;
             font-size: 14px;
-            padding: 5px 10px;
+            padding: 10px 15px;
             border-radius: 4px;
+            white-space: nowrap;
+        }
+        
+        nav a.active {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        
+        nav a:hover, .dropdown:hover {
+            background-color: #ddd;
+        }
+        
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown .dropdown-toggle {
+            cursor: pointer;
+        }
+        
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            min-width: 150px;
         }
 
-        nav a:hover {
+        .dropdown-menu li {
+            list-style: none;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 8px 12px;
+            text-decoration: none;
+            color: #444;
+            font-size: 14px;
+        }
+
+        .dropdown-menu a:hover {
             background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
         }
 
         .logout-btn {
@@ -347,14 +397,29 @@ footer .footer-bottom .social-links a img:hover {
     <div class="logo">
         <a href="dashboard.php"><img src="img/interior.png" alt="Interior Solutions Logo"></a>
     </div>
-    <nav>
-        <a href="dashboard.php">Home</a>
-        <a href="about_us.php" class="active">About Us</a>
-        <a href="what_we_do.php">What We Do</a>
-        <a href="product.php">Product</a>
-        <a href="gallery.php">Gallery</a>
-        <a href="contact.php">Contact</a>
-    </nav>
+        <nav>
+            <a href="dashboard.php">Home</a>
+            <div class="dropdown">
+                <a href="#" class="dropdown-toggle">What We Do</a>
+                <ul class="dropdown-menu">
+                    <li><a href="customize_interiors.php">Customized Interiors</a></li>
+                    <li><a href="design_and_build.php">Design And Build</a></li>
+                </ul>
+            </div>
+            <a href="about_us.php" class="active">About Us</a>
+            <!-- Products Dropdown -->
+             <div class="dropdown">
+                <a href="#" class="dropdown-toggle">Products</a>
+                <ul class="dropdown-menu">
+                    <li><a href="kitchen.php">Kitchen</a></li>
+                    <li><a href="bedroom.php">Bedroom</a></li>
+                    <li><a href="dining.php">Dining Room</a></li>
+                    <li><a href="living.php">Living Room</a></li>
+                </ul>
+            </div>
+            <a href="gallery.php">Gallery</a>
+            <a href="contact.php">Contact</a>
+        </nav>
     <a href="logout.php" class="logout-btn">Logout</a>
 </header>
 
@@ -508,7 +573,7 @@ footer .footer-bottom .social-links a img:hover {
     <footer>
     <!-- Floating Buttons -->
 <div class="floating-buttons">
-    <a href="https://wa.me/9999999999" class="whatsapp-button" target="_blank">
+    <a href="https://wa.me/7204941908" class="whatsapp-button" target="_blank">
         <i class="fab fa-whatsapp"></i> WhatsApp
     </a>
     <a href="mailto:contact@company.com" class="mail-button">

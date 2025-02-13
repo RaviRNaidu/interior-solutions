@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery</title>
+    <title>Dining</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
         body {
@@ -117,7 +117,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: url('img/gallery.jpg') no-repeat center center/cover;
+            background: url('img/dining.jpg') no-repeat center center/cover;
             padding: 100px 50px;
             height: 60vh;
             color: white;
@@ -313,23 +313,23 @@ footer .footer-bottom .social-links a img:hover {
             <a href="about_us.php">About Us</a>
             <!-- Products Dropdown -->
              <div class="dropdown">
-                <a href="#" class="dropdown-toggle">Products</a>
+                <a href="#" class="dropdown-toggle" >Products</a>
                 <ul class="dropdown-menu">
                     <li><a href="kitchen.php">Kitchen</a></li>
                     <li><a href="bedroom.php">Bedroom</a></li>
-                    <li><a href="dining.php">Dining Room</a></li>
+                    <li><a href="dining.php" class="active">Dining Room</a></li>
                     <li><a href="living.php">Living Room</a></li>
                 </ul>
             </div>
-            <a href="gallery.php" class="active">Gallery</a>
+            <a href="gallery.php">Gallery</a>
             <a href="contact.php">Contact</a>
         </nav>
     <a href="logout.php" class="logout-btn">Logout</a>
     </header>
     <div class="hero">
         <div class="text">
-            <h1>YOUR HOME. OUR DESIGN</h1>
-            <p>Expertly crafted interiors by professionals</p>
+            <h1>Customized Dining Room</h1>
+            <p>For Your Modern Lifestyle</p>
         </div>
     </div>
     <footer>

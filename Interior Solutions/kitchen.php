@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery</title>
+    <title>Kitchen</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
         body {
@@ -117,7 +117,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: url('img/gallery.jpg') no-repeat center center/cover;
+            background: url('img/kitchen.jpg') no-repeat center center/cover;
             padding: 100px 50px;
             height: 60vh;
             color: white;
@@ -144,17 +144,102 @@
         .hero h1 {
             font-size: 42px;
             margin-bottom: 15px;
+            width: 800px;
         }
 
         .hero p {
             font-size: 32px;
             margin-bottom: 20px;
         }
-        footer {
-    background-color: #f5f5f5;
-    color: #333;
-    padding-top: 20px;
+
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
 }
+
+.container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    background: white;
+}
+
+.intro {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.intro h2 {
+    font-size: 28px;
+    color: #333;
+}
+
+.intro p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+}
+
+.content-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.text {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.text h2 {
+    font-size: 24px;
+    color: #222;
+}
+
+.text p {
+    font-size: 16px;
+    color: #444;
+    line-height: 1.5;
+}
+
+.view-more {
+    background-color: #6a1b9a;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.view-more:hover {
+    background-color: #4a148c;
+}
+
+.images {
+    display: flex;
+    gap: 15px;
+}
+
+.images img {
+    width: 200px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+
+        footer {
+            background-color: #f5f5f5;
+            color: #333;
+            padding-top: 20px;
+        }
 
 footer .footer-top {
     padding: 20px 0;
@@ -313,25 +398,45 @@ footer .footer-bottom .social-links a img:hover {
             <a href="about_us.php">About Us</a>
             <!-- Products Dropdown -->
              <div class="dropdown">
-                <a href="#" class="dropdown-toggle">Products</a>
+                <a href="#" class="dropdown-toggle" >Products</a>
                 <ul class="dropdown-menu">
-                    <li><a href="kitchen.php">Kitchen</a></li>
+                    <li><a href="kitchen.php" class="active">Kitchen</a></li>
                     <li><a href="bedroom.php">Bedroom</a></li>
                     <li><a href="dining.php">Dining Room</a></li>
                     <li><a href="living.php">Living Room</a></li>
                 </ul>
             </div>
-            <a href="gallery.php" class="active">Gallery</a>
+            <a href="gallery.php">Gallery</a>
             <a href="contact.php">Contact</a>
         </nav>
     <a href="logout.php" class="logout-btn">Logout</a>
     </header>
     <div class="hero">
         <div class="text">
-            <h1>YOUR HOME. OUR DESIGN</h1>
-            <p>Expertly crafted interiors by professionals</p>
+            <h1>Customized Modular Kitchen</h1>
+            <p>Your Dream Home Deserves</p>
         </div>
     </div>
+    <body>
+    <div class="container">
+        <div class="intro">
+            <h2>Custom-made Modular Kitchen</h2>
+            <p>We offer modular kitchen designs for flats (apartments) or villas anywhere in India as per the client's requirements. Customized modular kitchen designs suit the client's lifestyle and fit perfectly in the space. An experienced interior designer from D'LIFE visits the site, takes measurements, and understands requirements through discussions. Our designer incorporates client requirements into a suitable design as per the shape and size of the kitchen. Once the client is completely satisfied with the drawings and specifications, the company produces a modular kitchen from its own factory. A team of experienced technicians performs installation on-site with perfect coordination. This professional interior design company can execute work within 35-40 days of finalization of drawings. Below are the 5 most popular types of modular kitchen designs by D'LIFE interiors.</p>
+        </div>
+
+        <div class="content-section">
+            <div class="text">
+                <h2>Island Kitchen</h2>
+                <p>Kitchens should be elegant-looking as well as serve our purpose of storage, convenient cooking, and a part of comfortable living. Island kitchen series of modern designs from D'LIFE offers you a wide range of selections to help the customer get the best idea. These are different from the traditional style and towards the new trends. Some of these models are displayed in our showrooms. Sandy, orchid, mauve, ivory, niagara, excalibur, etc., are some of the samples under island kitchens.</p>
+                <button class="view-more">View More</button>
+            </div>
+            <div class="images">
+                <img src="kitchen1.jpg" alt="Island Kitchen 1">
+                <img src="kitchen2.jpg" alt="Island Kitchen 2">
+            </div>
+        </div>
+    </div>
+</body>
     <footer>
     <div class="footer-top">
         <div class="container">
