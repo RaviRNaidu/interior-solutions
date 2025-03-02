@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kitchen</title>
+    <title>Bookshelves</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
         body {
@@ -109,93 +109,109 @@
             background-color:rgb(66, 119, 121);
         }
 
-        nav a.active {
-            font-weight: bold;
-            text-decoration: underline;
-        }
-        .hero {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: url('img/kitchen.jpg') no-repeat center center/cover;
-            padding: 100px 50px;
-            height: 60vh;
-            color: white;
-            position: relative;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
+        /* Full-screen Hero Image */
+        .hero img {
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 0;
+            height: 100vh;
+            object-fit: cover;
         }
 
-        .hero .text {
-            position: relative;
-            z-index: 1;
-            max-width: 500px;
-        }
-
-        .hero h1 {
-            font-size: 42px;
-            margin-bottom: 15px;
-            width: 800px;
-        }
-
-        .hero p {
-            font-size: 32px;
-            margin-bottom: 20px;
-        }
-
-        .intro-section {
-            background-color:#f9f9f9 ; /* White  #ffffff background for the first section */
+        /* Gallery Section */
+        .gallery {
             text-align: center;
             padding: 50px 20px;
+            background-color: #f2f2f2;
         }
-        .intro-section h2 {
+
+        .gallery h2 {
             font-size: 36px;
             color: #333;
+            margin-bottom: 10px;
         }
-        .intro-section p {
+
+        .gallery p {
             font-size: 18px;
             color: #555;
             max-width: 900px;
             margin: 0 auto;
             line-height: 1.6;
         }
-        .content-section {
-            background-color: #f2f2f2; /* Light gray background for the second section */
-            padding: 50px 20px;
-        }
-        .content-section2 {
-            background-color: #f9f9f9; /* Light gray background for the second section */
-            padding: 50px 20px;
-        }
-        .content-wrapper {
-            max-width: 1200px;
-            margin: 0 auto;
+
+        /* Image Grid */
+        .image-grid {
             display: flex;
-            gap: 50px;
-            align-items: center;
+            justify-content: center;
+            gap: 25px; /* Equal spacing between images */
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 40px auto 0; /* Padding above the images */
         }
-        .text-content {
-            flex: 1;
+
+        /* Image Box */
+        .image-box {
+            position: relative;
+            display: block;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 30%; /* Set equal width */
+            height: 280px; /* Set equal height */
         }
-        .text-content h2 {
-            font-size: 28px;
-            color: #222;
+
+        .image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Maintain aspect ratio */
+            border-radius: 10px;
         }
-        .text-content p {
+
+        /* Title always visible */
+        .image-box span {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            color: white;
+            text-align: center;
+            padding: 12px;
             font-size: 18px;
-            color: #444;
-            line-height: 1.6;
         }
-        .view-more, .talk {
+
+        /* Hover Effect */
+        .image-box:hover span {
+            background: rgba(0, 0, 0, 0.8); /* Darker background on hover */
+        }
+
+        /* Load More Button */
+        .load-more {
+            margin-top: 30px;
+            padding: 12px 20px;
+            font-size: 16px;
+            background-color: rgb(27, 40, 42);
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            align-self: flex-end; /* Push to the right */
+        }
+
+        .load-more-container {
+            display: flex;
+            justify-content: flex-end; /* Align to the right */
+            width: 30%;
+        }
+
+        .load-more:hover {
+            background-color: #427779;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background-color:#f9f9f9 ; /* White  #ffffff background for the first section */
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .contact-btn {
             display: inline-block;
             background-color: #1b282a;
             color: white;
@@ -207,21 +223,9 @@
             text-align: center;
             text-decoration: none;
         }
-        .view-more:hover {
+
+        .contact-btn:hover {
             background-color: #427779;
-        }
-        .talk:hover {
-            background-color: #427779;
-        }
-        .image-gallery {
-            display: flex;
-            gap: 15px;
-        }
-        .image-gallery img {
-            width: 350px;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 5px;
         }
 
         /* Popup Form */
@@ -241,7 +245,7 @@
             background: white;
             padding: 25px;
             border-radius: 10px;
-            width: 430px;
+            width: 440px;
             text-align: center;
             position: relative;
         }
@@ -253,7 +257,7 @@
         }
 
         .popup h2 {
-            font-size: 22px;
+            font-size: 20px;
             margin: 0;
             color: #333;
         }
@@ -457,9 +461,9 @@
 </head>
 <body>
     <header>
-    <div class="logo">
-        <a href="dashboard.php"><img src="img/interior.png" alt="Interior Solutions Logo"></a>
-    </div>
+        <div class="logo">
+            <a href="#"><img src="img/interior.png" alt="Interior Solutions Logo"></a>
+        </div>
         <nav>
             <a href="dashboard.php">Home</a>
             <div class="dropdown">
@@ -472,12 +476,12 @@
             <a href="about_us.php">About Us</a>
             <!-- Products Dropdown -->
              <div class="dropdown">
-                <a href="#" class="dropdown-toggle" >Products</a>
+                <a href="#" class="dropdown-toggle">Products</a>
                 <ul class="dropdown-menu">
-                    <li><a href="kitchen.php" class="active">Kitchen</a></li>
+                    <li><a href="kitchen.php">Kitchen</a></li>
                     <li><a href="bedroom.php">Bedroom</a></li>
                     <li><a href="dining.php">Dining Room</a></li>
-                    <li><a href="living.php">Living Room</a></li>
+                    <li><a href="living.php" class="active">Living Room</a></li>
                     <li><a href="decorative_units.php">Decorative Units</a></li>
                     <li><a href="kids_room.php">Kids Room</a></li>
                 </ul>
@@ -485,93 +489,34 @@
             <a href="gallery.php">Gallery</a>
             <a href="contact.php">Contact</a>
         </nav>
-    <a href="logout.php" class="logout-btn">Logout</a>
+        <a href="logout.php" class="logout-btn">Logout</a>
     </header>
-    <div class="hero">
-        <div class="text">
-            <h1>Customized Modular Kitchen</h1>
-            <p>Your Dream Home Deserves</p>
+    <!-- Full-screen image -->
+    <section class="hero">
+        <img src="img/book.jpg" alt="Interior Design">
+    </section>
+
+    <!-- Scrollable Section -->
+    <section class="gallery">
+        <h2>Bookshelves</h2>
+        <p>Bookshelves are the first love for a bibliophile. With our intelligent designs combined with the best quality materials and finish, your home is sure to be a head-turner. Our bookshelves are not just about storing books, they are designed to enhance the look of your living space and hold a variety of things such as decor items, souvenirs and even photo frames. All our units go through multiple quality checks to ensure accurate dimensions, and finish.</p>
+        
+        <div class="image-grid" id="imageGrid">
+            <a href="page1.html" class="image-box"><img src="img/doctrine.jpg" alt="Doctrine"><span>Doctrine</span></a>
+            <a href="page2.html" class="image-box"><img src="img/running.jpg" alt="Running Ladder"><span>Running Ladder</span></a>
         </div>
-    </div>
-    <div class="intro-section">
-        <h2>Custom-made Modular Kitchen</h2>
-        <p>We offer modular kitchen designs for flat (apartment), or villas anywhere in  India as per client’s requirements. Customized modular kitchen designs suits the client's lifestyle and fits perfectly in the space. An experienced interior designer from Interior Solutions visits the site, takes measurements and understands requirements through several discussions. Our designer incorporates client’s requirements into suitable design as per shape and size of the kitchen. Once the client is completely satisfied with the drawings and specifications, the company produces a modular kitchen from its own factory. A team of experienced technicians perform installation on site with perfect coordination. This professional interior design company can execute a work within 35-40 days of finalization of drawings. Below are the 5 most popular types of modular kitchen designs by Interior Solutions interiors.</p>
-    </div>
-    
-    <div class="content-section">
-        <div class="content-wrapper">
-            <div class="text-content">
-                <h2>Island Kitchen</h2>
-                <p>Kitchens should be elegant looking as well as serve our purpose of storage, convenient cooking, and a part of comfortable living. Island kitchen series of modern designs from D`LIFE offers you a wide range of selections to help the customer get the best idea. These are different from the traditional style and towards the new trends. Some of these models are displayed in our showrooms. Sandy, orchid, mauve, ivory, niagara, excalibur etc are some of the samples under island kitchens.</p>
-                <a href="Island_Kitchen.php" class="view-more">View More</a>
-            </div>
-            <div class="image-gallery">
-                <img src="img/kitchen2.jpg" alt="Island Kitchen 1">
-                <img src="img/kitchen11.jpg" alt="Island Kitchen 2">
-            </div>
-        </div>
-    </div>
-    <div class="content-section2">
-        <div class="content-wrapper">
-            <div class="text-content">
-                <h2>L Shape Kitchen</h2>
-                <p>Kitchen of a house should be made and maintained in proper shape, design and color. Everything should be arranged perfectly to match the requirements. L-shaped kitchens from D`LIFE are 100% customized to fit the space. Various options are given below which can further be modified and made as per a design finalized. These L shape kitchen models are available to visit and view in our showrooms across South India. Beige, cocoa, cedar, cyclone, ebony, talisman etc. are some of the samples under L shape.</p>
-                <a href="L_shape_kitchen.php" class="view-more">View More</a>
-            </div>
-            <div class="image-gallery">
-                <img src="img/lshapekitchen.jpg" alt="L Shape Kitchen 1">
-                <img src="img/lshapekitchen1.jpg" alt="L Shape Kitchen 2">
-            </div>
-        </div>
-    </div>
-    <div class="content-section">
-        <div class="content-wrapper">
-            <div class="text-content">
-                <h2>Parallel Kitchen</h2>
-                <p>Parallel kitchen is the concept of making cabinets on both the longer sides, especially as per the suitability to the space measured. Our interior designer would be able to help you decide the shape, color, and finish by giving suggestions. Visit our nearest showroom to view the designs below and select as per your preference and then let us discuss further. Some of the samples of parallel modular kitchen made by DLIFE are pearl, misty, coral and turmeric.</p>
-                <a href="parallel_kitchen.php" class="view-more">View More</a>
-            </div>
-            <div class="image-gallery">
-                <img src="img/parallelkitchen.jpg" alt="Parallel Kitchen 1">
-                <img src="img/parallelkitchen1.jpg" alt="Parallel Kitchen 2">
-            </div>
-        </div>
-    </div>
-    <div class="content-section2">
-        <div class="content-wrapper">
-            <div class="text-content">
-                <h2>Straight Kitchen</h2>
-                <p>A big space can accommodate a straight kitchen with differences from commonly used styles. Best of the efforts are made by our team of interior designers to provide unique ideas and concepts in making modular kitchens to suit the space and match with the house. Glossy, mystic, blackcurrant, siam, moroccan, tanned etc are some of the sample designs under a straight kitchen that can be made and installed across India.</p>
-                <a href="straight_kitchen.php" class="view-more">View More</a>
-            </div>
-            <div class="image-gallery">
-                <img src="img/straightkitchen.jpg" alt="Straight Kitchen 1">
-                <img src="img/straightkitchen1.jpg" alt="Straight Kitchen 2">
-            </div>
-        </div>
-    </div>
-    <div class="content-section">
-        <div class="content-wrapper">
-            <div class="text-content">
-                <h2>U Shape Kitchen</h2>
-                <p>A U-shaped kitchen is a kitchen design with work-spaces on three sides with cabinets. It’s an efficient design that provides plenty of work space and allows for ample storage. Designed to be user-friendly and clutter-free, this kitchen design keeps all your appliances or cooking essentials perfectly in place. U-shaped kitchens from D`LIFE are 100% customized to fit the space. You can visit one of our showrooms in Kerala, Karnataka, Maharashtra, Tamil Nadu and Telangana to view and discuss with our interior designers. Have a look at some of our stunning U-shaped kitchen designs below.</p>
-                <a href="u_shape_kitchen.php" class="view-more">View More</a>
-            </div>
-            <div class="image-gallery">
-                <img src="img/ushapekitchen.jpg" alt="U Shape Kitchen 1">
-                <img src="img/ushapekitchen1.jpg" alt="U Shape Kitchen 2">
-            </div>
-        </div>
-    </div>
-    <div class="intro-section">
-        <button class="talk" onclick="openForm()">Talk to our interior designing experts</button>
+    </section>
+
+    <!-- Contact Button -->
+    <div class="contact-section">
+        <button class="contact-btn" onclick="openForm()">Contact Our Interior Designer for Details</button>
     </div>
 
     <!-- Popup Form -->
     <div class="popup-overlay" id="popupForm">
         <div class="popup">
             <div class="popup-header">
-                <h2>Talk to our Interior designing expert</h2>
+                <h2>Contact Our Interior Designer for Details</h2>
                 <button class="close-btn" onclick="closeForm()">×</button>
             </div>
             <hr>
@@ -596,6 +541,37 @@
         </div>
     </div>
     <script src="form.js"></script>
+
+    <script>
+        document.getElementById("loadMore").addEventListener("click", function() {
+    const grid = document.getElementById("imageGrid");
+
+
+    // Keep track of how many times the button is clicked
+    if (!this.dataset.clickCount) {
+        this.dataset.clickCount = "0";
+    }
+
+    let clickCount = parseInt(this.dataset.clickCount);
+    
+    if (clickCount < newImagesSet.length) {
+        newImagesSet[clickCount].forEach(img => {
+            const anchor = document.createElement("a");
+            anchor.href = img.link;
+            anchor.classList.add("image-box");
+            anchor.innerHTML = `<img src="${img.src}" alt="${img.alt}"><span>${img.alt}</span>`;
+            grid.appendChild(anchor);
+        });
+
+        this.dataset.clickCount = (clickCount + 1).toString();
+    }
+
+    // Hide the button after all images are loaded
+    if (clickCount + 1 === newImagesSet.length) {
+        this.style.display = "none";
+    }
+});
+    </script>
     <footer>
         <div class="footer-top">
             <div class="container">
@@ -666,6 +642,6 @@
     </a>
     <a href="#" class="estimate-button">Free Estimate</a>
 </div>
-</footer>
+</footer> 
 </body>
 </html>

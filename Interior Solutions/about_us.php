@@ -17,7 +17,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #f5f5f5;
+            background-color: #f2f2f2;
             padding: 15px 30px;
         }
 
@@ -30,7 +30,7 @@
             display: flex;
             align-items: center;
             justify-content: space-evenly;
-            background-color: #f5f5f5;
+            background-color: #f2f2f2;
             padding: 5px 0;
             height: 50px;
         }
@@ -247,7 +247,7 @@
             color: #666;
         }
         footer {
-    background-color: #f5f5f5;
+    background-color: #f2f2f2;
     color: #333;
     padding-top: 20px;
 }
@@ -333,16 +333,6 @@ footer .footer-bottom a:hover {
     font-size: 18px;
 }
 
-.estimate-button {
-    background-color: #28a745;
-    font-weight: bold;
-}
-
-.estimate-button:hover {
-    background-color: #218838;
-}
-
-
 footer .footer-bottom {
     background-color: #333;
     color: white;
@@ -415,6 +405,8 @@ footer .footer-bottom .social-links a img:hover {
                     <li><a href="bedroom.php">Bedroom</a></li>
                     <li><a href="dining.php">Dining Room</a></li>
                     <li><a href="living.php">Living Room</a></li>
+                    <li><a href="decorative_units.php">Decorative Units</a></li>
+                    <li><a href="kids_room.php">Kids Room</a></li>
                 </ul>
             </div>
             <a href="gallery.php">Gallery</a>
@@ -503,75 +495,66 @@ footer .footer-bottom .social-links a img:hover {
     </div>
 </section>
 <footer>
-    <div class="footer-top">
-        <div class="container">
-            <div class="row">
-                <!-- Column 1 -->
-                <div class="col-md-3 col-sm-6">
-                    <h4>BENGALURU</h4>
-                    <p>HSR Layout<br>+91 999 551 77 77</p>
-                    <p>Yelahanka<br>+91 956 723 33 33</p>
-                    <p>Whitefield<br>+91 949 760 22 22</p>
-                </div>
-                <!-- Column 2 -->
-                <div class="col-md-3 col-sm-6">
-                    <h4>MYSURU</h4>
-                    <p>BM Habitat Mall<br>+91 938 342 33 33</p>
-                    <h4>MANGALURU</h4>
-                    <p>Bejai<br>+91 949 606 22 22</p>
-                </div>
-                <!-- Column 3 -->
-                <div class="col-md-3 col-sm-6">
-                    <h4>HYDERABAD</h4>
-                    <p>Banjara Hills<br>+91 949 508 77 77</p>
-                    <p>Kompally<br>+91 807 831 22 22</p>
-                    <h4>MARKETING OFFICE</h4>
-                    <p>UAE<br>+971 56 665 64 14</p>
-                </div>
-                <!-- Column 4 -->
-                <div class="col-md-3 col-sm-6">
-                    <h4>Quick Links</h4>
-                    <p><a href="#">Interior Designers in Bengaluru</a></p>
-                    <p><a href="#">Interior Designers in Chennai</a></p>
-                    <p><a href="#">Interior Designers in Hyderabad</a></p>
-                    <p><a href="#">Contact Us</a></p>
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6">
+                        <h4>BENGALURU</h4>
+                        <p>HSR Layout<br>+91 999 551 77 77</p>
+                        <p>Yelahanka<br>+91 956 723 33 33</p>
+                        <p>Whitefield<br>+91 949 760 22 22</p>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <h4>MYSURU</h4>
+                        <p>BM Habitat Mall<br>+91 938 342 33 33</p>
+                        <h4>MANGALURU</h4>
+                        <p>Bejai<br>+91 949 606 22 22</p>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <h4>HYDERABAD</h4>
+                        <p>Banjara Hills<br>+91 949 508 77 77</p>
+                        <p>Kompally<br>+91 807 831 22 22</p>
+                        <h4>MARKETING OFFICE</h4>
+                        <p>UAE<br>+971 56 665 64 14</p>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <h4>Quick Links</h4>
+                        <p><a href="#">Interior Designers in Bengaluru</a></p>
+                        <p><a href="#">Interior Designers in Chennai</a></p>
+                        <p><a href="#">Interior Designers in Hyderabad</a></p>
+                        <p><a href="#">Contact Us</a></p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="footer-bottom">
-    <div class="footer-content">
-        <!-- Footer Logo and Copyright -->
-        <div class="d-flex align-items-center">
-            <img src="img/interior.png" alt="Footer Logo" class="footer-logo">
-            <p>&copy; 2025 Interior Solutions. All Rights Reserved.</p>
+        <div class="footer-bottom">
+            <div class="footer-content">
+                <div class="d-flex align-items-center">
+                    <img src="img/interior.png" alt="Footer Logo" class="footer-logo">
+                    <p>&copy; 2025 Interior Solutions. All Rights Reserved.</p>
+                </div>
+                <div class="social-links">
+                    <a href="https://www.facebook.com" target="_blank">
+                        <img src="img/facebook.png" alt="Facebook">
+                    </a>
+                    <a href="https://api.whatsapp.com/send?phone=7204941908&text=Hello%21+%0A+How+can+i+help+you%3F+" target="_blank">
+                        <img src="img/whatsapp.jpg" alt="WhatsApp">
+                    </a>
+                    <a href="https://www.pinterest.com" target="_blank">
+                        <img src="img/Pinterest.png" alt="Pinterest">
+                    </a>
+                    <a href="https://www.youtube.com" target="_blank">
+                        <img src="img/youtube.png" alt="YouTube">
+                    </a>
+                    <a href="https://www.linkedin.com" target="_blank">
+                        <img src="img/linkedin.png" alt="LinkedIn">
+                    </a>
+                    <a href="https://www.instagram.com/ravi_r_naidu/" target="_blank">
+                        <img src="img/insta.png" alt="Instagram">
+                    </a>
+                </div>
+            </div>
         </div>
-
-        <!-- Social Media Links -->
-        <div class="social-links">
-            <a href="https://www.facebook.com" target="_blank">
-                <img src="img/facebook.png" alt="Facebook">
-            </a>
-            <a href="https://api.whatsapp.com/send?phone=7204941908&text=Hello%21+%0A+How+can+i+help+you%3F+" target="_blank">
-                <img src="img/whatsapp.jpg" alt="WhatsApp">
-            </a>
-            <a href="https://www.pinterest.com" target="_blank">
-                <img src="img/Pinterest.png" alt="Pinterest">
-            </a>
-            <a href="https://www.youtube.com" target="_blank">
-                <img src="img/youtube.png" alt="YouTube">
-            </a>
-            <a href="https://www.linkedin.com" target="_blank">
-                <img src="img/linkedin.png" alt="LinkedIn">
-            </a>
-            <a href="https://www.instagram.com/ravi_r_naidu/" target="_blank">
-                <img src="img/insta.png" alt="Instagram">
-            </a>
-        </div>
-    </div>
-</div>
-    <footer>
-    <!-- Floating Buttons -->
 <div class="floating-buttons">
     <a href="https://wa.me/7204941908" class="whatsapp-button" target="_blank">
         <i class="fab fa-whatsapp"></i> WhatsApp

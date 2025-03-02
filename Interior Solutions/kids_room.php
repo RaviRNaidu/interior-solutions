@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kitchen</title>
+    <title>Kids_Room</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
         body {
@@ -117,7 +117,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: url('img/kitchen.jpg') no-repeat center center/cover;
+            background: url('img/kidsroom1.jpg') no-repeat center center/cover;
             padding: 100px 50px;
             height: 60vh;
             color: white;
@@ -474,12 +474,12 @@
              <div class="dropdown">
                 <a href="#" class="dropdown-toggle" >Products</a>
                 <ul class="dropdown-menu">
-                    <li><a href="kitchen.php" class="active">Kitchen</a></li>
+                    <li><a href="kitchen.php">Kitchen</a></li>
                     <li><a href="bedroom.php">Bedroom</a></li>
                     <li><a href="dining.php">Dining Room</a></li>
                     <li><a href="living.php">Living Room</a></li>
                     <li><a href="decorative_units.php">Decorative Units</a></li>
-                    <li><a href="kids_room.php">Kids Room</a></li>
+                    <li><a href="kids_room.php" class="active">Kids Room</a></li>
                 </ul>
             </div>
             <a href="gallery.php">Gallery</a>
@@ -489,77 +489,51 @@
     </header>
     <div class="hero">
         <div class="text">
-            <h1>Customized Modular Kitchen</h1>
-            <p>Your Dream Home Deserves</p>
+            <h1>Customized Kids Room</h1>
+            <p>Your Little Ones Will Love</p>
         </div>
     </div>
     <div class="intro-section">
-        <h2>Custom-made Modular Kitchen</h2>
-        <p>We offer modular kitchen designs for flat (apartment), or villas anywhere in  India as per client’s requirements. Customized modular kitchen designs suits the client's lifestyle and fits perfectly in the space. An experienced interior designer from Interior Solutions visits the site, takes measurements and understands requirements through several discussions. Our designer incorporates client’s requirements into suitable design as per shape and size of the kitchen. Once the client is completely satisfied with the drawings and specifications, the company produces a modular kitchen from its own factory. A team of experienced technicians perform installation on site with perfect coordination. This professional interior design company can execute a work within 35-40 days of finalization of drawings. Below are the 5 most popular types of modular kitchen designs by Interior Solutions interiors.</p>
+        <h2>CUSTOM-MADE KIDS ROOM</h2>
+        <p>Most important people of any house – kids, deserve the best place to sleep, play, and grow. The Colour scheme of a kid’s room, furniture, and other provisions make it attractive. Cots, Wardrobe-Cum- Study Unit, Stand-alone Study unit, etc. can be made as per client’s choice. Wallpapers and decorative paints play a pivotal role in the transformation of the children’s rooms. As part of home furnishing, the client can just ask the designer to provide the best suitable options. Below are just some samples of children’s bedroom furniture.</p>
     </div>
     
     <div class="content-section">
         <div class="content-wrapper">
             <div class="text-content">
-                <h2>Island Kitchen</h2>
-                <p>Kitchens should be elegant looking as well as serve our purpose of storage, convenient cooking, and a part of comfortable living. Island kitchen series of modern designs from D`LIFE offers you a wide range of selections to help the customer get the best idea. These are different from the traditional style and towards the new trends. Some of these models are displayed in our showrooms. Sandy, orchid, mauve, ivory, niagara, excalibur etc are some of the samples under island kitchens.</p>
-                <a href="Island_Kitchen.php" class="view-more">View More</a>
+                <h2>Bed</h2>
+                <p>Kid’s room should be attractive in all aspects. Kids love their bed and its comfort a lot. Make a fabulous cot for your cutie. Customize it in your desires and make it lovable. Various options of Children’s Bed rooms designed with parents in mind are shown here. Choose from Kids Single Beds, Bunk Beds and Storage Beds. With convenience in design and function, these cots provide a relaxing sleep for the kids.</p>
+                <a href="kids_bed_room.php" class="view-more">View More</a>
             </div>
             <div class="image-gallery">
-                <img src="img/kitchen2.jpg" alt="Island Kitchen 1">
-                <img src="img/kitchen11.jpg" alt="Island Kitchen 2">
+                <img src="img/kidsbed.jpg" alt="Island Kitchen 1">
+                <img src="img/kidsbed1.jpg" alt="Island Kitchen 2">
             </div>
         </div>
     </div>
     <div class="content-section2">
         <div class="content-wrapper">
             <div class="text-content">
-                <h2>L Shape Kitchen</h2>
-                <p>Kitchen of a house should be made and maintained in proper shape, design and color. Everything should be arranged perfectly to match the requirements. L-shaped kitchens from D`LIFE are 100% customized to fit the space. Various options are given below which can further be modified and made as per a design finalized. These L shape kitchen models are available to visit and view in our showrooms across South India. Beige, cocoa, cedar, cyclone, ebony, talisman etc. are some of the samples under L shape.</p>
-                <a href="L_shape_kitchen.php" class="view-more">View More</a>
+                <h2>Study Unit</h2>
+                <p>Give the best to your children a peaceful space to study and progress. Let Interior Solutions design the study unit and include it in other home interior furnishing works. More than just a table and chair make it beautify his or her room in matching themes. Book shelves, reading tables and study units can be selected from the wide range of design collections.</p>
+                <a href="study_unit.php" class="view-more">View More</a>
             </div>
             <div class="image-gallery">
-                <img src="img/lshapekitchen.jpg" alt="L Shape Kitchen 1">
-                <img src="img/lshapekitchen1.jpg" alt="L Shape Kitchen 2">
+                <img src="img/kidsstudy.jpg" alt="L Shape Kitchen 1">
+                <img src="img/kidsstudy1.jpg" alt="L Shape Kitchen 2">
             </div>
         </div>
     </div>
     <div class="content-section">
         <div class="content-wrapper">
             <div class="text-content">
-                <h2>Parallel Kitchen</h2>
-                <p>Parallel kitchen is the concept of making cabinets on both the longer sides, especially as per the suitability to the space measured. Our interior designer would be able to help you decide the shape, color, and finish by giving suggestions. Visit our nearest showroom to view the designs below and select as per your preference and then let us discuss further. Some of the samples of parallel modular kitchen made by DLIFE are pearl, misty, coral and turmeric.</p>
-                <a href="parallel_kitchen.php" class="view-more">View More</a>
+                <h2>Wardrobe Cum Study Table</h2>
+                <p>Kids need a lot of space inside their room to study, play, relax and rejoice. They have their own belongings to preserve and enjoy. A uniquely designed wardrobe cum study table serves the purpose of making a neat kids room with facilities for arranging everything in order. Select from the following few designs and discuss with us to modify it further as per your need.</p>
+                <a href="wardrobe_cum_study.php" class="view-more">View More</a>
             </div>
             <div class="image-gallery">
-                <img src="img/parallelkitchen.jpg" alt="Parallel Kitchen 1">
-                <img src="img/parallelkitchen1.jpg" alt="Parallel Kitchen 2">
-            </div>
-        </div>
-    </div>
-    <div class="content-section2">
-        <div class="content-wrapper">
-            <div class="text-content">
-                <h2>Straight Kitchen</h2>
-                <p>A big space can accommodate a straight kitchen with differences from commonly used styles. Best of the efforts are made by our team of interior designers to provide unique ideas and concepts in making modular kitchens to suit the space and match with the house. Glossy, mystic, blackcurrant, siam, moroccan, tanned etc are some of the sample designs under a straight kitchen that can be made and installed across India.</p>
-                <a href="straight_kitchen.php" class="view-more">View More</a>
-            </div>
-            <div class="image-gallery">
-                <img src="img/straightkitchen.jpg" alt="Straight Kitchen 1">
-                <img src="img/straightkitchen1.jpg" alt="Straight Kitchen 2">
-            </div>
-        </div>
-    </div>
-    <div class="content-section">
-        <div class="content-wrapper">
-            <div class="text-content">
-                <h2>U Shape Kitchen</h2>
-                <p>A U-shaped kitchen is a kitchen design with work-spaces on three sides with cabinets. It’s an efficient design that provides plenty of work space and allows for ample storage. Designed to be user-friendly and clutter-free, this kitchen design keeps all your appliances or cooking essentials perfectly in place. U-shaped kitchens from D`LIFE are 100% customized to fit the space. You can visit one of our showrooms in Kerala, Karnataka, Maharashtra, Tamil Nadu and Telangana to view and discuss with our interior designers. Have a look at some of our stunning U-shaped kitchen designs below.</p>
-                <a href="u_shape_kitchen.php" class="view-more">View More</a>
-            </div>
-            <div class="image-gallery">
-                <img src="img/ushapekitchen.jpg" alt="U Shape Kitchen 1">
-                <img src="img/ushapekitchen1.jpg" alt="U Shape Kitchen 2">
+                <img src="img/kidswall.jpg" alt="Parallel Kitchen 1">
+                <img src="img/kidswall1.jpg" alt="Parallel Kitchen 2">
             </div>
         </div>
     </div>
