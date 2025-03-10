@@ -124,58 +124,6 @@ INSERT INTO `designs` (`id`, `name`, `category`, `design_type`, `image`, `descri
 (77, 'Scratch', 'bedroom', 'bed', 'img/scratch.jpg', 'Make the most of the bedroom space with this contemporary bed design. Designed to offer effortless space for the room without obstructions, Scratch has efficiently designed soft-close bedside tables with drawers on either side. Crafted with long-lasting Hardwood MDF in a blend of slate grey and irish cream colors, this bed is something that sets your bedroom apart. The modern hardboard with a clean-lined contemporary design matches every décor and can be paired easily in small spaces. This beautiful bed is customizable and can be made in queen or king-size beds. For enquiries, contact or Walk in to our nearest showrooms spread across Kerala, Tamilnadu or Bangalore.', 120000.00, 2113, 1509),
 (78, 'Rafflesia', 'bedroom', 'bed', 'img/rafflesia.jpg', 'One should be more careful while selecting furniture or making interior choices for bedrooms. A suitable bed is the key element of bedroom interior; it dominates all the other furniture items and decorative items in this aspect. Beds should be functional, stylish, comfortable and appropriate for the occupants. Contemporary bed designs like Rafflesia are specifically designed to provide extreme comfort and distinctive style. It’s low height and excellent positioning makes it comfortable for both young and older individuals.', 95000.00, 926, 763);
 
--- --------------------------------------------------------
-
---
--- Table structure for table `form_submissions`
---
-
-CREATE TABLE `form_submissions` (
-  `id` int(11) NOT NULL,
-  `form_type` enum('talk_expert','free_estimate','customize_home','plan_design','deal_company') NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `phone` varchar(20) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `project_location` varchar(255) NOT NULL,
-  `submission_date` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `form_submissions`
---
-
-INSERT INTO `form_submissions` (`id`, `form_type`, `name`, `phone`, `email`, `project_location`, `submission_date`) VALUES
-(1, 'free_estimate', 'tejas', '995544882', 'pushkarkp84@gmail.com', 'banglore', '2025-03-11 04:31:09');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `users`
---
-
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `username` varchar(50) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `otp` int(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `created_at`, `otp`) VALUES
-(1, 'Ravi R', 'rarrvr66@gmail.com', '$2y$10$InZsdLkCt7bR8My22GDdeeruiajXcnkNn1Egflkm3R1YVwlsTScHm', '2025-01-10 02:19:57', 0),
-(2, 'tejas', 'ttjs@gmail.com', '$2y$10$C68ZW.453indLPY9CtDj4eATyTRUwpcQrnvx.TdbSjMe5FjoeFmIm', '2025-01-10 03:53:59', 0),
-(3, 'krishna', 'krishna123@gmail.com', '$2y$10$4YKgdUW.v.5zx6ZUutXgKOhQaEso2mLlAxUKcZKGzNSezjxNPQg.K', '2025-01-14 02:58:37', 0),
-(4, 'ravir', 'rar6@gmail.com', '$2y$10$tEPpSLreex9ZUkksGbwjHudjRkSs0E3/WzeceaMUEwFHhXffrVzCe', '2025-01-14 03:39:44', 0),
-(5, 'pursha', 'pursha@gmail.com', '$2y$10$WsBU2.dYNzq/d4vHSKM0S.ZGYi20f5aIYDZ2Uu6/XSC5xMekGn5N.', '2025-01-14 05:35:01', 0),
-(6, 'suraj', 'suraj123@gmail.com', '$2y$10$s0qxOFVPwhmpIszZKkHMXurS8EAHEWw7Jdmyk4J1VNBuAEUL.u1XC', '2025-01-16 20:32:46', 0),
-(7, 'sanathan', 'sanathan@gmail.com', '$2y$10$/398Jy0/0rkMDXd3UddGauEU8D5k1659Kfmube3K2WHtC/EXF.wxq', '2025-01-17 19:08:44', 0),
-(8, 'anirudh s rso', 'anirudh30082006@gmail.com', '$2y$10$R9hh6EPNFD8x82w4Btegf.3V/4F6sYmmENFUupCNw4LMOUyNBktvG', '2025-01-22 00:19:14', 0);
-
 --
 -- Indexes for dumped tables
 --
@@ -187,19 +135,6 @@ ALTER TABLE `designs`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `form_submissions`
---
-ALTER TABLE `form_submissions`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -208,18 +143,6 @@ ALTER TABLE `users`
 --
 ALTER TABLE `designs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
-
---
--- AUTO_INCREMENT for table `form_submissions`
---
-ALTER TABLE `form_submissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
