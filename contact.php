@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -128,8 +128,8 @@ nav a:hover {
     align-items: center;
 }
 .heading{
-    padding:50px 20px;
-    background-color: #f9f9f9;
+   padding:50px 20px;
+    background-color: #f5f5f5;
 }
 .locations {
     display: flex;
@@ -324,6 +324,107 @@ nav a:hover {
     color: #555;
     text-align: center;      
 }
+.review-box {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  margin: 30px auto; /* centers the review box horizontally */
+}
+
+
+    h2 {
+      color: #0d0e10;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    textarea {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      resize: vertical;
+    }
+
+    .star-rating {
+      display: flex;
+      font-size: 2rem;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+
+    .star {
+      cursor: pointer;
+      color: #ccc;
+      transition: color 0.2s;
+      margin: 0 3px;
+    }
+
+    .star.selected,
+    .star.hovered {
+      color: #ffcc00;
+    }
+
+    button {
+      width: 100%;
+      background-color: #080909;
+      border: none;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background-color: #989a9c;
+    }
+
+    #response {
+      margin-top: 15px;
+      font-weight: 500;
+      color: green;
+      text-align: center;
+    }
+    /* Thank You Modal Styling */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 300px;
+    position: relative;
+  }
+
+  .modal-content p {
+    font-size: 1.1rem;
+    color: #333;
+  }
+
+  .modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
 footer {
     background-color: #f5f5f5;
     color: #333;
@@ -340,42 +441,34 @@ footer .footer-top h4 {
     font-weight: bold;
     margin-bottom: 10px;
 }
-
 footer .footer-top p {
     font-size: 14px;
     line-height: 1.8;
 }
-
 footer .footer-top a {
     color: #444;
     text-decoration: none;
 }
-
 footer .footer-top a:hover {
     text-decoration: underline;
 }
-
 footer .footer-bottom {
     background-color: #333;
     color: white;
     padding: 15px 0;
 }
-
 footer .footer-bottom p {
     margin: 0;
     font-size: 14px;
 }
-
 footer .footer-bottom a {
     color: white;
     font-size: 16px;
     margin-left: 10px;
 }
-
 footer .footer-bottom a:hover {
     color: #ddd;
 }
-
 .floating-buttons {
     position: fixed;
     bottom: 100px; /* Move above the footer */
@@ -385,7 +478,6 @@ footer .footer-bottom a:hover {
     flex-direction: column;
     gap: 15px;
 }
-
 .floating-buttons a {
     display: flex;
     align-items: center;
@@ -400,34 +492,27 @@ footer .footer-bottom a:hover {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
 }
-
 .floating-buttons a:hover {
     background-color:rgb(66, 119, 121);
     transform: translateY(-3px);
 }
-
 .floating-buttons a i {
     margin-right: 8px;
     font-size: 18px;
 }
-
 .estimate-button {
     background-color: #28a745;
     font-weight: bold;
 }
-
 .estimate-button:hover {
     background-color: #218838;
 }
-
-
 footer .footer-bottom {
     background-color: #333;
     color: white;
     padding: 20px 0;
     text-align: center;
 }
-
 footer .footer-bottom .footer-content {
     display: flex;
     flex-wrap: wrap;
@@ -437,24 +522,20 @@ footer .footer-bottom .footer-content {
     margin: 0 auto;
     padding: 10px;
 }
-
 footer .footer-bottom img.footer-logo {
     height: 40px;
     object-fit: contain;
     margin-right: 15px;
 }
-
 footer .footer-bottom p {
     font-size: 14px;
     margin: 0;
     color: #ddd;
 }
-
 footer .footer-bottom .social-links {
     display: flex;
     gap: 15px;
 }
-
 footer .footer-bottom .social-links a img {
     height: 40px;
     width: 40px;
@@ -463,7 +544,6 @@ footer .footer-bottom .social-links a img {
     border-radius: 50%; /* Makes the image round */
     object-fit: cover; /* Ensures the image fits within the circular shape */
 }
-
 footer .footer-bottom .social-links a img:hover {
     transform: scale(1.2);
     filter: brightness(1.3);
@@ -487,17 +567,14 @@ footer .footer-bottom .social-links a img:hover {
     </header>
     <div class="hero">
         <div class="text">
-            <h1>LEADING INTERIOR</h1>
-            
-            <p>Company In India</p>
+        <h1>LEADING INTERIOR</h1>
+        <p>Company In India</p>
         </div>
     </div>
     <div class="heading">
-        <div>
     <h2>Contact The Best Home Interior Designers</h2>
-    </div>
     <p>At Interior Solutions, we want to make finding the designs you love as easy & exciting as possible. To provide stunning solutions to the residential market and to meet the ever-growing demands, we have expanded our showrooms with presence in  Bangalore, Mysore, Chennai, & Mangalore. Scroll down to find out more locations we serve. Contact us or walk into our showrooms and let our professional interior designers help you decorate your home and find furniture you’ll love. We would love to help you with your next project!</p>
-   
+    </div>
     <section class="contact-container">
     <div class="contact-form">
     <h2 class="section-title">Our Locations</h2>
@@ -536,7 +613,6 @@ footer .footer-bottom .social-links a img:hover {
                 <input type="text" name="mobile" placeholder="Mobile Number" required>
                 <input type="email" name="email" placeholder="Email" required>
                 <input type="text" name="project-location" placeholder="Project Location" required>
-                
             <button type="submit">Submit</button>
         </form>
     </div>
@@ -568,9 +644,161 @@ footer .footer-bottom .social-links a img:hover {
 </script>
 </div>
 </div>
-   </section>
-    </section>
 </section>
+</section>
+</section>
+
+<!-- Review Box Section -->
+<div class="review-box">
+  <h2>Customer Reviews</h2>
+
+  <!-- Review form -->
+  <form id="reviewForm" method="POST" action="reviews.php">
+    
+    <!-- Review Text -->
+    <label for="review">Add a Review</label>
+    <textarea id="review" name="review" placeholder="Enter your review" required></textarea>
+
+    <!-- Star Rating -->
+    <div class="star-rating" id="starRating">
+      <span class="star" data-value="1">&#9733;</span>
+      <span class="star" data-value="2">&#9733;</span>
+      <span class="star" data-value="3">&#9733;</span>
+      <span class="star" data-value="4">&#9733;</span>
+      <span class="star" data-value="5">&#9733;</span>
+    </div>
+
+    <!-- Hidden input for selected rating -->
+    <input type="hidden" name="rating" id="rating" value="">
+
+    <!-- Error message display -->
+    <p id="formError" style="color: red; display: none;"></p>
+
+    <!-- Submit button -->
+    <button type="submit">Submit Review</button>
+  </form>
+</div>
+
+<!-- Thank You Modal -->
+<div id="thankyouModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span id="closeThankYou" class="close" style="cursor: pointer;">&times;</span>
+    <p>Thank you for your review!</p>
+  </div>
+</div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const stars = document.querySelectorAll('.star');
+    const ratingInput = document.getElementById('rating');
+    const errorElem = document.getElementById("formError");
+    const modal = document.getElementById("thankyouModal");
+    const closeModalBtn = document.getElementById("closeThankYou");
+    const reviewForm = document.getElementById("reviewForm");
+
+    // Update stars based on rating
+    function updateStars(rating) {
+      stars.forEach(star => {
+        const value = parseInt(star.getAttribute('data-value'));
+        star.classList.toggle('selected', value <= rating);
+      });
+    }
+
+    // Show error
+    function showError(message) {
+      errorElem.textContent = message;
+      errorElem.style.display = "block";
+    }
+
+    // Hide error
+    function hideError() {
+      errorElem.textContent = "";
+      errorElem.style.display = "none";
+    }
+
+    // Show thank you modal
+    function showThankYouModal() {
+      modal.style.display = "flex";
+    }
+
+    // Handle star events
+    stars.forEach(star => {
+      star.addEventListener("click", function () {
+        const rating = this.getAttribute("data-value");
+        ratingInput.value = rating;
+        updateStars(rating);
+      });
+
+      star.addEventListener("mouseover", function () {
+        const rating = this.getAttribute("data-value");
+        stars.forEach(s => {
+          const value = parseInt(s.getAttribute("data-value"));
+          s.classList.toggle("hovered", value <= rating);
+        });
+      });
+
+      star.addEventListener("mouseout", () => {
+        stars.forEach(s => s.classList.remove("hovered"));
+      });
+    });
+
+    // Close modal
+    closeModalBtn.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+
+    // Close modal if clicked outside
+    window.addEventListener("click", event => {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+
+    // Submit form via AJAX
+    reviewForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const review = document.getElementById("review").value.trim();
+      const rating = ratingInput.value;
+
+      if (!review) {
+        showError("Please write a review.");
+        return;
+      }
+
+      if (!rating || rating < 1 || rating > 5) {
+        showError("Please select a rating from 1 to 5.");
+        return;
+      }
+
+      hideError();
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "reviews.php", true);
+      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          console.log("Server response:", xhr.responseText);
+          showThankYouModal();
+          reviewForm.reset();
+          updateStars(0);
+        } else {
+          showError("Server error. Try again later.");
+        }
+      };
+
+      xhr.onerror = function () {
+        showError("Network error. Please try again.");
+      };
+
+      const params = `review=${encodeURIComponent(review)}&rating=${encodeURIComponent(rating)}`;
+      xhr.send(params);
+    });
+  });
+</script>
+
 <footer>
     <div class="footer-top">
         <div class="container">

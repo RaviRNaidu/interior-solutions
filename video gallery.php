@@ -62,106 +62,11 @@ h2 {
     color: #333;
      margin-bottom: 20px;
 }
-       /* Main Container */
-.gallery-container {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-/* Each Project Box */
-.project-box {
-    display: flex;
-    align-items: center;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    max-width: 500px;
-    gap: 20px;
-    transition: transform 0.3s ease-in-out;
-}
-
-/* Hover effect */
-.project-box:hover {
-    transform: translateY(-5px);
-}
-
-/* Image Styling */
-.project-box img {
-    width: 150px;
-    height: 150px;
-    border-radius: 10px;
-    object-fit: cover;
-}
-
-/* Text Content */
-.info {
-    max-width: 300px;
-}
-
-.info h3 {
-    font-size: 20px;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.info p {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 10px;
-    line-height: 1.5;
-}
-
-.info a {
-    display: inline-block;
-    text-decoration: none;
-    color: white;
-    background-color:rgb(9, 10, 10);
-    padding: 8px 12px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease-in-out;
-}
-
-.info a:hover {
-    background-color: #0056b3;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .gallery-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-.project-box {
-    flex-direction: column;
-    text-align: center;
-    max-width: 100%;
-    }
-
-.project-box img {
-    width: 100%;
-    height: auto;
-    }
-}
-.gallery img { 
-    transition: transform 0.3s ease-in-out;
-    cursor: pointer;
-    border-radius: 10px;  
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.gallery img:hover {
-    transform: scale(1.05); /* Slight zoom in effect */
-}
 .hero {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: url('img/gallery.jpg') no-repeat center center/cover;
+    background: url('img/video.jpg') no-repeat center center/cover;
     padding: 100px 50px;
     height: 60vh;
     color: white;
@@ -191,7 +96,71 @@ h2 {
     font-size: 32px;
      margin-bottom: 20px;
  }
- footer {
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    text-align: center;
+    
+}
+
+h3 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.video-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+    justify-content: center;
+}
+
+.video-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    background: #fff;
+    padding: 10px;
+}
+
+.video-container:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+iframe {
+    width: 100%;
+    height: 200px;
+    border: none;
+    border-radius: 10px;
+}
+
+/* Responsive Adjustments */
+@media (min-width: 768px) {
+    .video-gallery {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    }
+    iframe {
+        height: 250px;
+    }
+}
+
+@media (min-width: 1024px) {
+    iframe {
+        height: 300px;
+    }
+}
+
+footer {
     background-color: #f5f5f5;
     color: #333;
     padding-top: 20px;
@@ -335,7 +304,8 @@ footer .footer-bottom .social-links a img:hover {
     transform: scale(1.2);
     filter: brightness(1.3);
 }
-    </style>
+
+</style>
 </head>
 <body>
     <header>
@@ -354,76 +324,43 @@ footer .footer-bottom .social-links a img:hover {
     </header>
     <div class="hero">
         <div class="text">
-            <h1>YOUR HOME. OUR DESIGN</h1>
-            <p>Expertly crafted interiors by professionals</p>
+            <h1>Video Gallery</h1>
+            <p>Watch our latest videos</p>
         </div>
     </div>
-    <div class="heading"><br><br>
-    <h2><b>ACTUAL PROJECT PHOTOGRAPHS</b></h2>
-    <br><br>
-    <div class="container">
-    <div class="prodect">
-    <div class="gallery-container">
-     <!-- first Gallery Item -->
-     <div class="project-box">
-            <img src="img/videog.jpg" alt="Gallery Image 1">
-            <div class="info">
-                <h3>VIDEO<br><b>GALLERY</b></h3>
-                <p>If you are looking for clearly laid out answers and realistic inspirations to your questions over interior design, and design process, andhow much our clients love our works, take the time to understand why we are the best for your deram home.</p>
-                <a href="video gallery.php">View Now</a>
-            </div>
+    <br>
+    <br>
+   
+    <h3>VIDEO GALLERY</h3> 
+
+    <div class="video-gallery">
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/OVzXX1kIi5k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
-         <!-- second Gallery Item -->
-         <div class="project-box">
-            <img src="img/in galary.jpg" alt="Gallery Image 1">
-            <div class="info">
-                <h3>INTERIOR<br><b>GALLERY</b></h3>
-                <p>We have worked on a wide range of residential projects including apartments, luxury villas, and family homes.and holidays homes.Having worked on residential projects for over 20 years we know what adds value and what you looking for.</p>
-                <a href="javascript:void(0);" id="viewInteriorGallery">View Now</a>
-                <!-- JavaScript to Scroll to Gallery -->
-<script>
-document.getElementById("viewInteriorGallery").addEventListener("click", function() {
-    document.getElementById("gallery").scrollIntoView({ behavior: "smooth" });
-});
-</script>
-            </div>
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/SNwEr95Thew" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
-        <!-- third Gallery Item -->
-        <div class="project-box">
-            <img src="img/wise gallery.jpg" alt="Gallery Image 2">
-            <div class="info">
-                <h3>PROJECT-WISE<br><b>GALLERY</b></h3>
-                <p>We have designed interiors for modern family homes to luxury residential projects across South India.From initial consultation to a completely finished home, we provide our clients with the best possible interior designs and ideas that are comfortable, affordable,and livable. </p>
-                <a href="project_vice_gallery.php">View Now</a> 
-                </div>
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/LGJPFVBrvG8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/fNsThqfBC-A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/XmljSNWn2hk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/HLMhFzohl6Q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
     </div>
-    </div>
-    </div>
-<br>
-<br>
-<h2>INTERIOR<br><b>GALLERY</h2>
-<div id="gallery" class="gallery">
-    <img src="img/gallery q.jpg" alt="Residential Interior Design" height="300" width="350">  
-    <img src="img/gallery q.jpg" alt="Gallery Image 1" height="300" width="350">
-           <img src="img/gallery e.webp" alt="Gallery Image 2" height="300" width="350">
-           <img src="img/gallery r.avif" alt="Gallery Image 3" height="300" width="350">
-           <img src="img/galllery h.webp" alt="Gallery Image 4" height="300" width="350">
-           <img src="img/gallery t.jpg" alt="Gallery Image 5" height="300" width="350">
-           <img src="img/gallery y.avif" alt="Gallery Image 6" height="300" width="350">
-           <img src="img/gallery u.jpg" alt="Gallery Image 7" height="300" width="350">
-           <img src="img/gallery i.webp" alt="Gallery Image 8" height="300" width="350">
-           <img src="img/gallery g.jpg" alt="Gallery Image 9" height="300" width="350">
-           <img src="img/gallery o.jpg" alt="Gallery Image 10" height="300" width="350">
-           <img src="img/gallery p.avif" alt="Gallery Image 11" height="300" width="350">
-           <img src="img/gallery a.webp" alt="Gallery Image 12" height="300" width="350">
-           <img src="img/gallery s.jpeg" alt="Gallery Image 13" height="300" width="350">
-           <img src="img/gallery d.webp" alt="Gallery Image 14" height="300" width="350">
-           <img src="img/gallery f.jpg" alt="Gallery Image 15" height="300" width="350">
-<br>
-<br>
-<br>
-<footer>
+</div>
+
+
+
+
+
+
+    <footer>
     <div class="footer-top">
         <div class="container">
             <div class="row">
