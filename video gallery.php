@@ -82,7 +82,6 @@ h2 {
     background: rgba(0, 0, 0, 0.5);
     z-index: 0;
 }
-
 .hero .text {
     position: relative;
     z-index: 1;
@@ -103,7 +102,6 @@ body {
     text-align: center;
     
 }
-
 h3 {
     font-size: 28px;
     color: #333;
@@ -111,7 +109,6 @@ h3 {
     text-transform: uppercase;
     letter-spacing: 2px;
 }
-
 .video-gallery {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -121,7 +118,6 @@ h3 {
     margin: auto;
     justify-content: center;
 }
-
 .video-container {
     position: relative;
     overflow: hidden;
@@ -131,19 +127,16 @@ h3 {
     background: #fff;
     padding: 10px;
 }
-
 .video-container:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
-
 iframe {
     width: 100%;
     height: 200px;
     border: none;
     border-radius: 10px;
 }
-
 /* Responsive Adjustments */
 @media (min-width: 768px) {
     .video-gallery {
@@ -153,65 +146,53 @@ iframe {
         height: 250px;
     }
 }
-
 @media (min-width: 1024px) {
     iframe {
         height: 300px;
     }
 }
-
 footer {
     background-color: #f5f5f5;
     color: #333;
     padding-top: 20px;
 }
-
 footer .footer-top {
     padding: 20px 0;
 }
-
 footer .footer-top h4 {
     font-size: 16px;
     color: #333;
     font-weight: bold;
     margin-bottom: 10px;
 }
-
 footer .footer-top p {
     font-size: 14px;
     line-height: 1.8;
 }
-
 footer .footer-top a {
     color: #444;
     text-decoration: none;
 }
-
 footer .footer-top a:hover {
     text-decoration: underline;
 }
-
 footer .footer-bottom {
     background-color: #333;
     color: white;
     padding: 15px 0;
 }
-
 footer .footer-bottom p {
     margin: 0;
     font-size: 14px;
 }
-
 footer .footer-bottom a {
     color: white;
     font-size: 16px;
     margin-left: 10px;
 }
-
 footer .footer-bottom a:hover {
     color: #ddd;
 }
-
 .floating-buttons {
     position: fixed;
     bottom: 100px; /* Move above the footer */
@@ -221,7 +202,6 @@ footer .footer-bottom a:hover {
     flex-direction: column;
     gap: 15px;
 }
-
 .floating-buttons a {
     display: flex;
     align-items: center;
@@ -236,34 +216,27 @@ footer .footer-bottom a:hover {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
 }
-
 .floating-buttons a:hover {
     background-color:rgb(66, 119, 121);
     transform: translateY(-3px);
 }
-
 .floating-buttons a i {
     margin-right: 8px;
     font-size: 18px;
 }
-
 .estimate-button {
     background-color: #28a745;
     font-weight: bold;
 }
-
 .estimate-button:hover {
     background-color: #218838;
 }
-
-
 footer .footer-bottom {
     background-color: #333;
     color: white;
     padding: 20px 0;
     text-align: center;
 }
-
 footer .footer-bottom .footer-content {
     display: flex;
     flex-wrap: wrap;
@@ -273,24 +246,20 @@ footer .footer-bottom .footer-content {
     margin: 0 auto;
     padding: 10px;
 }
-
 footer .footer-bottom img.footer-logo {
     height: 40px;
     object-fit: contain;
     margin-right: 15px;
 }
-
 footer .footer-bottom p {
     font-size: 14px;
     margin: 0;
     color: #ddd;
 }
-
 footer .footer-bottom .social-links {
     display: flex;
     gap: 15px;
 }
-
 footer .footer-bottom .social-links a img {
     height: 40px;
     width: 40px;
@@ -299,12 +268,10 @@ footer .footer-bottom .social-links a img {
     border-radius: 50%; /* Makes the image round */
     object-fit: cover; /* Ensures the image fits within the circular shape */
 }
-
 footer .footer-bottom .social-links a img:hover {
     transform: scale(1.2);
     filter: brightness(1.3);
 }
-
 </style>
 </head>
 <body>
@@ -330,9 +297,7 @@ footer .footer-bottom .social-links a img:hover {
     </div>
     <br>
     <br>
-   
     <h3>VIDEO GALLERY</h3> 
-
     <div class="video-gallery">
         <div class="video-container">
             <iframe width="560" height="315" src="https://www.youtube.com/embed/OVzXX1kIi5k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -354,12 +319,6 @@ footer .footer-bottom .social-links a img:hover {
         </div>
     </div>
 </div>
-
-
-
-
-
-
     <footer>
     <div class="footer-top">
         <div class="container">
@@ -404,7 +363,6 @@ footer .footer-bottom .social-links a img:hover {
             <img src="img/interior.png" alt="Footer Logo" class="footer-logo">
             <p>&copy; 2025 Interior Solutions. All Rights Reserved.</p>
         </div>
-
         <!-- Social Media Links -->
         <div class="social-links">
             <a href="https://www.facebook.com" target="_blank">
