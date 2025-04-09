@@ -108,7 +108,6 @@ h2 {
     margin: auto;
     text-align: center;
 }
-
     /* Ultra-Premium Gallery Card */
 .gallery-container {
     display: flex;
@@ -199,7 +198,6 @@ h2 {
 .slider-wrapper img {
     width: 48%;
       }
-    }
 @media (max-width: 768px) {
     .gallery-container {
     padding: 25px;
@@ -207,49 +205,40 @@ h2 {
 .slider-wrapper img {
     width: 100%;
       }
-    }
 footer {
     background-color: #f5f5f5;
     color: #333;
     padding-top: 20px;
 }
-
 footer .footer-top {
     padding: 20px 0;
 }
-
 footer .footer-top h4 {
     font-size: 16px;
     color: #333;
     font-weight: bold;
     margin-bottom: 10px;
 }
-
 footer .footer-top p {
     font-size: 14px;
     line-height: 1.8;
 }
-
 footer .footer-top a {
     color: #444;
     text-decoration: none;
 }
-
 footer .footer-top a:hover {
     text-decoration: underline;
 }
-
 footer .footer-bottom {
     background-color: #333;
     color: white;
     padding: 15px 0;
 }
-
 footer .footer-bottom p {
     margin: 0;
     font-size: 14px;
 }
-
 footer .footer-bottom a {
     color: white;
     font-size: 16px;
@@ -259,7 +248,6 @@ footer .footer-bottom a {
 footer .footer-bottom a:hover {
     color: #ddd;
 }
-
 .floating-buttons {
     position: fixed;
     bottom: 100px; /* Move above the footer */
@@ -269,7 +257,6 @@ footer .footer-bottom a:hover {
     flex-direction: column;
     gap: 15px;
 }
-
 .floating-buttons a {
     display: flex;
     align-items: center;
@@ -284,34 +271,27 @@ footer .footer-bottom a:hover {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
 }
-
 .floating-buttons a:hover {
     background-color:rgb(66, 119, 121);
     transform: translateY(-3px);
 }
-
 .floating-buttons a i {
     margin-right: 8px;
     font-size: 18px;
 }
-
 .estimate-button {
     background-color: #28a745;
     font-weight: bold;
 }
-
 .estimate-button:hover {
     background-color: #218838;
 }
-
-
 footer .footer-bottom {
     background-color: #333;
     color: white;
     padding: 20px 0;
     text-align: center;
 }
-
 footer .footer-bottom .footer-content {
     display: flex;
     flex-wrap: wrap;
@@ -321,24 +301,20 @@ footer .footer-bottom .footer-content {
     margin: 0 auto;
     padding: 10px;
 }
-
 footer .footer-bottom img.footer-logo {
     height: 40px;
     object-fit: contain;
     margin-right: 15px;
 }
-
 footer .footer-bottom p {
     font-size: 14px;
     margin: 0;
     color: #ddd;
 }
-
 footer .footer-bottom .social-links {
     display: flex;
     gap: 15px;
 }
-
 footer .footer-bottom .social-links a img {
     height: 40px;
     width: 40px;
@@ -347,7 +323,6 @@ footer .footer-bottom .social-links a img {
     border-radius: 50%; /* Makes the image round */
     object-fit: cover; /* Ensures the image fits within the circular shape */
 }
-
 footer .footer-bottom .social-links a img:hover {
     transform: scale(1.2);
     filter: brightness(1.3);
