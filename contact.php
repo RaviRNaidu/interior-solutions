@@ -332,99 +332,87 @@ nav a:hover {
   width: 400px;
   margin: 30px auto; /* centers the review box horizontally */
 }
-
-
-    h2 {
-      color: #0d0e10;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-
-    textarea {
-      width: 100%;
-      margin-bottom: 15px;
-      padding: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      resize: vertical;
-    }
-
-    .star-rating {
-      display: flex;
-      font-size: 2rem;
-      justify-content: center;
-      margin-bottom: 15px;
-    }
-
-    .star {
-      cursor: pointer;
-      color: #ccc;
-      transition: color 0.2s;
-      margin: 0 3px;
-    }
-
-    .star.selected,
-    .star.hovered {
-      color: #ffcc00;
-    }
-
-    button {
-      width: 100%;
-      background-color: #080909;
-      border: none;
-      color: white;
-      padding: 10px;
-      border-radius: 5px;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-
-    button:hover {
-      background-color: #989a9c;
-    }
-
-    #response {
-      margin-top: 15px;
-      font-weight: 500;
-      color: green;
-      text-align: center;
-    }
-    /* Thank You Modal Styling */
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 2000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    justify-content: center;
-    align-items: center;
-  }
-
-  .modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    width: 300px;
-    position: relative;
-  }
-
-  .modal-content p {
-    font-size: 1.1rem;
-    color: #333;
-  }
-
-  .modal-content .close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 1.2rem;
-    cursor: pointer;
-  }
+ .h2 {
+  color: #0d0e10;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.textarea {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  resize: vertical;
+}
+ .star-rating {
+  display: flex;
+  font-size: 2rem;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+.star {
+  cursor: pointer;
+  color: #ccc;
+  transition: color 0.2s;
+  margin: 0 3px;
+}
+.star.selected,
+.star.hovered {
+  color: #ffcc00;
+}
+button {
+  width: 100%;
+  background-color: #080909;
+  border: none;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+}
+button:hover {
+  background-color: #989a9c;
+}
+#response {
+  margin-top: 15px;
+  font-weight: 500;
+  color: green;
+  text-align: center;
+}
+/* Thank You Modal Styling */
+modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+}
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 300px;
+  position: relative;
+}
+.modal-content p {
+  font-size: 1.1rem;
+  color: #333;
+}
+.modal-content .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
 footer {
     background-color: #f5f5f5;
     color: #333;
@@ -647,18 +635,14 @@ footer .footer-bottom .social-links a img:hover {
 </section>
 </section>
 </section>
-
 <!-- Review Box Section -->
 <div class="review-box">
   <h2>Customer Reviews</h2>
-
   <!-- Review form -->
   <form id="reviewForm" method="POST" action="reviews.php">
-    
     <!-- Review Text -->
     <label for="review">Add a Review</label>
     <textarea id="review" name="review" placeholder="Enter your review" required></textarea>
-
     <!-- Star Rating -->
     <div class="star-rating" id="starRating">
       <span class="star" data-value="1">&#9733;</span>
@@ -667,18 +651,14 @@ footer .footer-bottom .social-links a img:hover {
       <span class="star" data-value="4">&#9733;</span>
       <span class="star" data-value="5">&#9733;</span>
     </div>
-
     <!-- Hidden input for selected rating -->
     <input type="hidden" name="rating" id="rating" value="">
-
     <!-- Error message display -->
     <p id="formError" style="color: red; display: none;"></p>
-
     <!-- Submit button -->
     <button type="submit">Submit Review</button>
   </form>
 </div>
-
 <!-- Thank You Modal -->
 <div id="thankyouModal" class="modal" style="display: none;">
   <div class="modal-content">
@@ -686,8 +666,6 @@ footer .footer-bottom .social-links a img:hover {
     <p>Thank you for your review!</p>
   </div>
 </div>
-
-
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const stars = document.querySelectorAll('.star');
@@ -696,7 +674,6 @@ footer .footer-bottom .social-links a img:hover {
     const modal = document.getElementById("thankyouModal");
     const closeModalBtn = document.getElementById("closeThankYou");
     const reviewForm = document.getElementById("reviewForm");
-
     // Update stars based on rating
     function updateStars(rating) {
       stars.forEach(star => {
@@ -704,24 +681,20 @@ footer .footer-bottom .social-links a img:hover {
         star.classList.toggle('selected', value <= rating);
       });
     }
-
     // Show error
     function showError(message) {
       errorElem.textContent = message;
       errorElem.style.display = "block";
     }
-
     // Hide error
     function hideError() {
       errorElem.textContent = "";
       errorElem.style.display = "none";
     }
-
     // Show thank you modal
     function showThankYouModal() {
       modal.style.display = "flex";
     }
-
     // Handle star events
     stars.forEach(star => {
       star.addEventListener("click", function () {
@@ -729,7 +702,6 @@ footer .footer-bottom .social-links a img:hover {
         ratingInput.value = rating;
         updateStars(rating);
       });
-
       star.addEventListener("mouseover", function () {
         const rating = this.getAttribute("data-value");
         stars.forEach(s => {
@@ -737,24 +709,20 @@ footer .footer-bottom .social-links a img:hover {
           s.classList.toggle("hovered", value <= rating);
         });
       });
-
       star.addEventListener("mouseout", () => {
         stars.forEach(s => s.classList.remove("hovered"));
       });
     });
-
     // Close modal
     closeModalBtn.addEventListener("click", () => {
       modal.style.display = "none";
     });
-
     // Close modal if clicked outside
     window.addEventListener("click", event => {
       if (event.target === modal) {
         modal.style.display = "none";
       }
     });
-
     // Submit form via AJAX
     reviewForm.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -798,7 +766,6 @@ footer .footer-bottom .social-links a img:hover {
     });
   });
 </script>
-
 <footer>
     <div class="footer-top">
         <div class="container">
