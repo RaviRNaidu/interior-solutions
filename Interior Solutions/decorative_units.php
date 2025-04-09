@@ -21,15 +21,18 @@
             padding: 15px 30px;
         }
 
+        /* Logo */
         .logo img {
             height: 50px;
             object-fit: cover;
         }
 
+        /* Center the navigation */
         nav {
             display: flex;
             align-items: center;
-            justify-content: space-evenly;
+            justify-content: center; /* Centering navigation */
+            flex-grow: 1; /* Allows nav to take up available space */
             background-color: #f2f2f2;
             padding: 5px 0;
             height: 50px;
@@ -44,24 +47,25 @@
             border-radius: 4px;
             white-space: nowrap;
         }
-        
+
         nav a.active {
             font-weight: bold;
             text-decoration: underline;
         }
-        
+
         nav a:hover, .dropdown:hover {
             background-color: #ddd;
         }
-        
+
+        /* Dropdown Menu */
         .dropdown {
             position: relative;
         }
-        
+
         .dropdown .dropdown-toggle {
             cursor: pointer;
         }
-        
+
         .dropdown-menu {
             display: none;
             position: absolute;
@@ -94,8 +98,34 @@
             display: block;
         }
 
+        /* Move icons closer to the logout button */
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 20px; /* Reduced gap to bring them closer */
+            margin-right: 20px; /* Moves them slightly to the right */
+        }
+
+        /* Styling for Wishlist & Cart Icons */
+        .nav-icons a {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-icons img {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .nav-icons img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Logout Button */
         .logout-btn {
-            background-color:rgb(27, 40, 42);
+            background-color: rgb(27, 40, 42);
             color: white;
             border: none;
             padding: 8px 12px;
@@ -103,16 +133,13 @@
             font-size: 14px;
             cursor: pointer;
             text-decoration: none;
+            margin-left: 10px; /* Moves it slightly for better spacing */
         }
 
         .logout-btn:hover {
-            background-color:rgb(66, 119, 121);
+            background-color: rgb(66, 119, 121);
         }
-
-        nav a.active {
-            font-weight: bold;
-            text-decoration: underline;
-        }
+        
         .hero {
             display: flex;
             align-items: center;
@@ -484,7 +511,19 @@
             </div>
             <a href="gallery.php">Gallery</a>
             <a href="contact.php">Contact</a>
+            <a href="orders.php">Orders</a>
         </nav>
+
+        <!-- Wishlist and Cart Icons -->
+        <div class="nav-icons">
+            <a href="wishlist.php" class="wishlist-icon">
+                <img src="img/heart.png" alt="Wishlist">
+            </a>
+            <a href="cart.php" class="cart-icon">
+                <img src="img/cart.png" alt="Cart">
+            </a>
+        </div>
+
     <a href="logout.php" class="logout-btn">Logout</a>
     </header>
     <div class="hero">
@@ -512,38 +551,68 @@
         </div>
     </div>
     <div class="intro-section">
-        <button class="talk" onclick="openForm()">Talk to our interior designing experts</button>
+        <button class="talk" onclick="openTalkForm()">Talk to our interior designing experts</button>
     </div>
 
-    <!-- Popup Form -->
-    <div class="popup-overlay" id="popupForm">
-        <div class="popup">
-            <div class="popup-header">
-                <h2>Talk to our Interior designing expert</h2>
-                <button class="close-btn" onclick="closeForm()">×</button>
-            </div>
-            <hr>
-            <p>Please fill out the enquiry below and we will get back to you as soon as possible</p>
-            <form id="enquiryForm">
-                <input type="text" placeholder="Name" required>
-                
-                <div class="phone-input">
-                    <select>
-                        <option value="+91">🇮🇳 +91</option>
-                        <option value="+1">🇺🇸 +1</option>
-                        <option value="+44">🇬🇧 +44</option>
-                        <option value="+61">🇦🇺 +61</option>
-                    </select>
-                    <input type="tel" placeholder="Contact Number" required>
-                </div>
-
-                <input type="email" placeholder="Email Address" required>
-                <input type="text" placeholder="Project Location" required>
-                <button type="submit" class="submit-btn">Submit</button>
-            </form>
+<!-- Talk to Expert Popup -->
+<div class="popup-overlay" id="popupForm">
+    <div class="popup">
+        <div class="popup-header">
+            <h2>Talk to our Interior designing expert</h2>
+            <button class="close-btn" onclick="closeForm('popupForm')">×</button>
         </div>
+        <hr>
+        <p>Please fill out the enquiry below and we will get back to you as soon as possible</p>
+        <form id="enquiryForm" onsubmit="submitForm(event, 'talk_expert')">
+            <input type="text" name="name" placeholder="Name" required>
+            
+            <div class="phone-input" >
+                <select>
+                    <option value="+91">🇮🇳 +91</option>
+                    <option value="+1">🇺🇸 +1</option>
+                    <option value="+44">🇬🇧 +44</option>
+                    <option value="+61">🇦🇺 +61</option>
+                </select>
+                <input type="tel" name="phone" placeholder="Contact Number" required>
+            </div>
+
+            <input type="email" name="email" placeholder="Email Address" required>
+            <input type="text" name="project_location" placeholder="Project Location" required>
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
     </div>
-    <script src="form.js"></script>
+</div>
+
+<!-- Free Estimate Popup -->
+<div class="popup-overlay" id="popupFloatingForm">
+    <div class="popup">
+        <div class="popup-header">
+            <h2>GET FREE ESTIMATE</h2>
+            <button class="close-btn" onclick="closeForm('popupFloatingForm')">×</button>
+        </div>
+        <hr>
+        <p>Please fill out the enquiry below and we will get back to you as soon as possible</p>
+        <form id="enquiryFloatingForm" onsubmit="submitForm(event, 'free_estimate')">
+            <input type="text" name="name" placeholder="Name" required>
+            
+            <div class="phone-input">
+                <select>
+                    <option value="+91">🇮🇳 +91</option>
+                    <option value="+1">🇺🇸 +1</option>
+                    <option value="+44">🇬🇧 +44</option>
+                    <option value="+61">🇦🇺 +61</option>
+                </select>
+                <input type="tel" name="phone" placeholder="Contact Number" required>
+            </div>
+
+            <input type="email" name="email" placeholder="Email Address" required>
+            <input type="text" name="project_location" placeholder="Project Location" required>
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+</div>
+<!-- Single Script File -->
+<script src="popupForms.js"></script>
     <footer>
         <div class="footer-top">
             <div class="container">
@@ -612,7 +681,7 @@
     <a href="mailto:contact@company.com" class="mail-button">
         <i class="fas fa-envelope"></i> Send Mail
     </a>
-    <a href="#" class="estimate-button">Free Estimate</a>
+    <a class="free_estimate" onclick="openEstimateForm()">Free Estimate</a>
 </div>
 </footer>
 </body>

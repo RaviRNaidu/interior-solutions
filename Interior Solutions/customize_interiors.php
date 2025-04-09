@@ -11,7 +11,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, sans-serif;
-}
+        }
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
@@ -27,15 +27,18 @@
             padding: 15px 30px;
         }
 
+        /* Logo */
         .logo img {
             height: 50px;
             object-fit: cover;
         }
 
+        /* Center the navigation */
         nav {
             display: flex;
             align-items: center;
-            justify-content: space-evenly;
+            justify-content: center; /* Centering navigation */
+            flex-grow: 1; /* Allows nav to take up available space */
             background-color: #f2f2f2;
             padding: 5px 0;
             height: 50px;
@@ -50,24 +53,25 @@
             border-radius: 4px;
             white-space: nowrap;
         }
-        
+
         nav a.active {
             font-weight: bold;
             text-decoration: underline;
         }
-        
+
         nav a:hover, .dropdown:hover {
             background-color: #ddd;
         }
-        
+
+        /* Dropdown Menu */
         .dropdown {
             position: relative;
         }
-        
+
         .dropdown .dropdown-toggle {
             cursor: pointer;
         }
-        
+
         .dropdown-menu {
             display: none;
             position: absolute;
@@ -100,8 +104,34 @@
             display: block;
         }
 
+        /* Move icons closer to the logout button */
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 20px; /* Reduced gap to bring them closer */
+            margin-right: 20px; /* Moves them slightly to the right */
+        }
+
+        /* Styling for Wishlist & Cart Icons */
+        .nav-icons a {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-icons img {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .nav-icons img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Logout Button */
         .logout-btn {
-            background-color:rgb(27, 40, 42);
+            background-color: rgb(27, 40, 42);
             color: white;
             border: none;
             padding: 8px 12px;
@@ -109,16 +139,13 @@
             font-size: 14px;
             cursor: pointer;
             text-decoration: none;
+            margin-left: 10px; /* Moves it slightly for better spacing */
         }
 
         .logout-btn:hover {
-            background-color:rgb(66, 119, 121);
+            background-color: rgb(66, 119, 121);
         }
 
-        nav a.active {
-            font-weight: bold;
-            text-decoration: underline;
-        }
         .hero {
             display: flex;
             align-items: center;
@@ -158,58 +185,97 @@
             margin-bottom: 20px;
         }
 
-/* First Section: Custom-Made Home Interiors */
-.custom-made {
-    text-align: center;
-    padding: 40px 20px;
-    background-color: #f9f9f9;
-}
+        /* First Section: Custom-Made Home Interiors */
+        .custom-made {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: #f9f9f9;
+        }
 
-.custom-made h1 {
-    font-size: 32px;
-    margin-bottom: 20px;
-}
+        .custom-made h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
 
-.interior-links {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-}
+        .custom-made p {
+            font-size: 18px;
+            color: #555;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Three columns */
+            grid-auto-rows: auto;
+            gap: 10px;
+            width: 90%;
+            max-width: 1200px;
+            padding: 20px;
+            margin: auto;
+        }
 
-.interior-item {
+  .gallery-item {
     position: relative;
-    display: inline-block;
-    text-align: center;
-    transition: transform 0.3s ease;
-}
-
-.interior-item img {
-    width: 200px;
-    height: 150px;
+    overflow: hidden;
     border-radius: 10px;
-    transition: opacity 0.3s ease;
-}
+    cursor: pointer;
+  }
 
-.interior-item span {
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.1);
+    filter: blur(3px) brightness(0.7);
+  }
+
+  .gallery-item .caption {
     position: absolute;
-    bottom: 10px;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 16px;
-}
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    z-index: 2;
+    pointer-events: none;
+  }
 
-.interior-item:hover {
-    transform: scale(1.05);
-}
+  /* Assign grid spans */
+  .kitchen {
+    grid-column: span 3; /* Full width */
+    height: 350px;
+  }
 
-.interior-item:hover img {
-    opacity: 0.7;
-}
+  .kids-room {
+    grid-column: span 3; /* Force to Row 3, full width */
+    grid-row: 3;
+    height: 250px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .gallery {
+      grid-template-columns: 1fr;
+    }
+
+    .gallery-item {
+      grid-column: span 1;
+      height: auto;
+    }
+
+    .gallery-item .caption {
+      font-size: 1.5rem;
+    }
+  }
 
 .custom-section {
     display: flex;
@@ -263,20 +329,24 @@
     margin-bottom: 15px;
 }
 
-.custom-btn {
-    display: inline-block;
-    background-color: rgb(27, 40, 42);
-    color: #fff;
-    padding: 12px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.3s;
-}
+    .talk, .customize_home {
+        display: inline-block;
+        background-color: #1b282a;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 5px;
+        font-size: 16px;
+        text-decoration: none;
+        transition: 0.3s ease;
+        text-align: center;
+    }
 
-.custom-btn:hover {
-    background-color: rgb(66, 119, 121);
-}
+    .talk:hover {
+        background-color: rgb(66, 119, 121);
+    }
+    .customize_home:hover {
+        background-color: rgb(66, 119, 121);
+    }
 
 @media (max-width: 768px) {
     .custom-section {
@@ -294,174 +364,280 @@
     }
 }
 
+        /* Popup Form */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .popup {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            width: 430px;
+            text-align: center;
+            position: relative;
+        }
+
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .popup h2 {
+            font-size: 22px;
+            margin: 0;
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #555;
+        }
+
+        .popup p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* Form Styling */
+        form input,
+        .phone-input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .phone-input {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .phone-input select {
+            border: none;
+            background: #f3f3f3;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .phone-input input {
+            flex: 1;
+            border: none;
+            padding: 10px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: rgb(27, 40, 42);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: rgb(66, 119, 121);
+        }
+
         footer {
-    background-color: #f2f2f2;
-    color: #333;
-    padding-top: 20px;
-}
+            background-color: #f2f2f2;
+            color: #333;
+            padding-top: 20px;
+        }
 
-footer .footer-top {
-    padding: 20px 0;
-}
+        footer .footer-top {
+            padding: 20px 0;
+        }
 
-footer .footer-top h4 {
-    font-size: 16px;
-    color: #333;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
+        footer .footer-top h4 {
+            font-size: 16px;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
 
-footer .footer-top p {
-    font-size: 14px;
-    line-height: 1.8;
-}
+        footer .footer-top p {
+            font-size: 14px;
+            line-height: 1.8;
+        }
 
-footer .footer-top a {
-    color: #444;
-    text-decoration: none;
-}
+        footer .footer-top a {
+            color: #444;
+            text-decoration: none;
+        }
 
-footer .footer-top a:hover {
-    text-decoration: underline;
-}
+        footer .footer-top a:hover {
+            text-decoration: underline;
+        }
 
-footer .footer-bottom {
-    background-color: #333;
-    color: white;
-    padding: 15px 0;
-}
+        footer .footer-bottom {
+            background-color: #333;
+            color: white;
+            padding: 15px 0;
+        }
 
-footer .footer-bottom p {
-    margin: 0;
-    font-size: 14px;
-}
+        footer .footer-bottom p {
+            margin: 0;
+            font-size: 14px;
+        }
 
-footer .footer-bottom a {
-    color: white;
-    font-size: 16px;
-    margin-left: 10px;
-}
+        footer .footer-bottom a {
+            color: white;
+            font-size: 16px;
+            margin-left: 10px;
+        }
 
-footer .footer-bottom a:hover {
-    color: #ddd;
-}
+        footer .footer-bottom a:hover {
+            color: #ddd;
+        }
 
-.floating-buttons {
-    position: fixed;
-    bottom: 100px; /* Move above the footer */
-    right: 20px;
-    z-index: 999; /* Ensure it doesn't overlap essential elements */
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
+        .floating-buttons {
+            position: fixed;
+            bottom: 100px; /* Move above the footer */
+            right: 20px;
+            z-index: 999; /* Ensure it doesn't overlap essential elements */
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
 
-.floating-buttons a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color:rgb(27, 40, 42);
-    color: white;
-    padding: 12px 18px;
-    border-radius: 50px;
-    font-size: 14px;
-    text-decoration: none;
-    font-weight: 500;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-}
+        .floating-buttons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color:rgb(27, 40, 42);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 50px;
+            font-size: 14px;
+            text-decoration: none;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
 
-.floating-buttons a:hover {
-    background-color:rgb(66, 119, 121);
-    transform: translateY(-3px);
-}
+        .floating-buttons a:hover {
+            background-color:rgb(66, 119, 121);
+            transform: translateY(-3px);
+        }
 
-.floating-buttons a i {
-    margin-right: 8px;
-    font-size: 18px;
-}
+        .floating-buttons a i {
+            margin-right: 8px;
+            font-size: 18px;
+        }
 
-footer .footer-bottom {
-    background-color: #333;
-    color: white;
-    padding: 20px 0;
-    text-align: center;
-}
+        footer .footer-bottom {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
 
-footer .footer-bottom .footer-content {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 10px;
-}
+        footer .footer-bottom .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px;
+        }
 
-footer .footer-bottom img.footer-logo {
-    height: 40px;
-    object-fit: contain;
-    margin-right: 15px;
-}
+        footer .footer-bottom img.footer-logo {
+            height: 40px;
+            object-fit: contain;
+            margin-right: 15px;
+        }
 
-footer .footer-bottom p {
-    font-size: 14px;
-    margin: 0;
-    color: #ddd;
-}
+        footer .footer-bottom p {
+            font-size: 14px;
+            margin: 0;
+            color: #ddd;
+        }
 
-footer .footer-bottom .social-links {
-    display: flex;
-    gap: 15px;
-}
+        footer .footer-bottom .social-links {
+            display: flex;
+            gap: 15px;
+        }
 
-footer .footer-bottom .social-links a img {
-    height: 40px;
-    width: 40px;
-    cursor: pointer;
-    transition: transform 0.3s, filter 0.3s;
-    border-radius: 50%; /* Makes the image round */
-    object-fit: cover; /* Ensures the image fits within the circular shape */
-}
+        footer .footer-bottom .social-links a img {
+            height: 40px;
+            width: 40px;
+            cursor: pointer;
+            transition: transform 0.3s, filter 0.3s;
+            border-radius: 50%; /* Makes the image round */
+            object-fit: cover; /* Ensures the image fits within the circular shape */
+        }
 
-footer .footer-bottom .social-links a img:hover {
-    transform: scale(1.2);
-    filter: brightness(1.3);
-}
+        footer .footer-bottom .social-links a img:hover {
+            transform: scale(1.2);
+            filter: brightness(1.3);
+        }
     </style>
 </head>
 <body>
-    <header>
+<header>
     <div class="logo">
-        <a href="dashboard.php"><img src="img/interior.png" alt="Interior Solutions Logo"></a>
+        <a href="#"><img src="img/interior.png" alt="Interior Solutions Logo"></a>
     </div>
-        <nav>
-            <a href="dashboard.php">Home</a>
-            <div class="dropdown">
-                <a href="#" class="dropdown-toggle">What We Do</a>
-                <ul class="dropdown-menu">
-                    <li><a href="customize_interiors.php" class="active">Customized Interiors</a></li>
-                    <li><a href="design_and_build.php">Design And Build</a></li>
-                </ul>
-            </div>
-            <a href="about_us.php">About Us</a>
-            <!-- Products Dropdown -->
-             <div class="dropdown">
-                <a href="#" class="dropdown-toggle" >Products</a>
-                <ul class="dropdown-menu">
-                    <li><a href="kitchen.php">Kitchen</a></li>
-                    <li><a href="bedroom.php">Bedroom</a></li>
-                    <li><a href="dining.php">Dining Room</a></li>
-                    <li><a href="living.php">Living Room</a></li>
-                    <li><a href="decorative_units.php">Decorative Units</a></li>
-                    <li><a href="kids_room.php">Kids Room</a></li>
-                </ul>
-            </div>
-            <a href="gallery.php">Gallery</a>
-            <a href="contact.php">Contact</a>
-        </nav>
+    <nav>
+        <a href="dashboard.php">Home</a>
+        <div class="dropdown">
+            <a href="" class="dropdown-toggle">What We Do</a>
+            <ul class="dropdown-menu">
+                <li><a href="customize_interiors.php" class="active">Customized Interiors</a></li>
+                <li><a href="design_and_build.php">Design And Build</a></li>
+            </ul>
+        </div>
+        <a href="about_us.php">About Us</a>
+        <div class="dropdown">
+            <a href="#" class="dropdown-toggle">Products</a>
+            <ul class="dropdown-menu">
+                <li><a href="kitchen.php">Kitchen</a></li>
+                <li><a href="bedroom.php">Bedroom</a></li>
+                <li><a href="dining.php">Dining Room</a></li>
+                <li><a href="living.php">Living Room</a></li>
+                <li><a href="decorative_units.php">Decorative Units</a></li>
+                <li><a href="kids_room.php">Kids Room</a></li>
+            </ul>
+        </div>
+        <a href="gallery.php">Gallery</a>
+        <a href="contact.php">Contact</a>
+        <a href="orders.php">Orders</a>
+    </nav>
+    
+    <!-- Wishlist and Cart Icons -->
+    <div class="nav-icons">
+        <a href="wishlist.php" class="wishlist-icon">
+            <img src="img/heart.png" alt="Wishlist">
+        </a>
+        <a href="cart.php" class="cart-icon">
+            <img src="img/cart.png" alt="Cart">
+        </a>
+    </div>
+
     <a href="logout.php" class="logout-btn">Logout</a>
-    </header>
+</header>
     <div class="hero">
         <div class="text">
             <h1>Long-lasting Home Interiors</h1>
@@ -473,23 +649,37 @@ footer .footer-bottom .social-links a img:hover {
         <h1>Custom-Made Home Interiors</h1>
         <p>“Made for you” may be an accurate phrase to express what we do in interiors. We have been designing and executing exquisite home interiors since 2004. Custom-made interior is the best way to ensure that modular kitchen, wardrobes and other furniture perfectly fits to the spaces. Our interior designers possess impeccable ability to understand client’s requirements and provide the best space planning for a house or flat.</p>
         <p>Interior Solutions fully equipped modular kitchen is distinct with its unique design and most modern features. We plan and make contemporary style furniture for bedrooms, living and dining rooms as well. Innovative ideas, creative designs and ability to deliver the promises on time enables us to retain the leadership in this field.</p>
-        <div class="interior-links">
-            <a href="living.php" class="interior-item">
-                <img src="img/living.jpg" alt="Living Room">
-                <span>Living</span>
-            </a>
-            <a href="bedroom.php" class="interior-item">
-                <img src="img/bedroom.jpg" alt="Bedroom">
-                <span>Bedroom</span>
-            </a>
-            <a href="kitchen.php" class="interior-item">
+        <div class="gallery">
+            <div class="gallery-item kitchen">
+            <a href="kitchen.php">
                 <img src="img/kitchen.jpg" alt="Kitchen">
-                <span>Kitchen</span>
             </a>
-            <a href="dining.php" class="interior-item">
-                <img src="img/dining.jpg" alt="Dining">
-                <span>Dining</span>
+            <div class="caption">KITCHEN</div>
+        </div>
+        <div class="gallery-item">
+            <a href="bedroom.php">
+                <img src="img/bedroom.jpg" alt="Kitchen">
             </a>
+            <div class="caption">BEDROOM</div>
+        </div>
+        <div class="gallery-item">
+            <a href="dining.php">
+                <img src="img/dining.jpg" alt="Kitchen">
+            </a>
+            <div class="caption">DINING</div>
+        </div>
+        <div class="gallery-item">
+            <a href="living.php">
+                <img src="img/living.jpg" alt="Kitchen">
+            </a>
+            <div class="caption">LIVING</div>
+        </div>
+        <div class="gallery-item kids-room">
+            <a href="kids_room.php">
+                <img src="img/kidsroom1.jpg" alt="Kitchen">
+            </a>
+            <div class="caption">KIDS ROOM</div>
+        </div>
         </div>
     </section>
 
@@ -510,7 +700,7 @@ footer .footer-bottom .social-links a img:hover {
             <li>Enables you to have furniture with a suitable color that blends with your color scheme.</li>
             <li>Plan and modify interior works as per budget. Clients get to study the estimate and drawings and alter plans during the design stage as per budget.</li>
         </ul>
-        <a href="custom-interiors.html" class="custom-btn">Get 100% Customized Interiors</a>
+        <a class="customize_home" onclick="openCustomizeForm()">Get 100% Customized Interiors</a>
     </div>
 </div>
 
@@ -519,12 +709,98 @@ footer .footer-bottom .social-links a img:hover {
         <h2>Give a Personalized Touch to Your Dream Home</h2>
         <p>We bring customization to your fingertips, from the initial consultation through the end process; our team of interior designers will provide you with all the support and advice so you get a personalized touch in your dream home. Over the years, we have worked with 10000+ clients and we provide interior design and furnishing services, which are more than just about styles and finishes.</p>
         <p>Interior Solutions provides you a fully bespoke service on home interior design to your brief. All our products are custom made from the finest materials. With respect for the past and an eye on the future, our high level of machinery and quality checks help you realize your dream home interiors with fully customized products and quality.</p>
-        <a href="expert-designer.html" class="custom-btn">Reach Our Expert Designer</a>
+        <a class="talk" onclick="openTalkForm()">Reach Our Expert Designer</a>
     </div>
     <div class="custom-image">
         <img src="img/customize2.jpg" alt="Personalized Home Interior">
     </div>
 </div>
+    <!-- Talk to Expert Popup -->
+    <div class="popup-overlay" id="popupForm">
+        <div class="popup">
+            <div class="popup-header">
+                <h2>Reach Our Expert Designer</h2>
+                <button class="close-btn" onclick="closeForm('popupForm')">×</button>
+            </div>
+            <hr>
+            <p>Please fill out the enquiry below and we will get back to you as soon as possible</p>
+            <form id="enquiryForm" onsubmit="submitForm(event, 'talk_expert')">
+                <input type="text" name="name" placeholder="Name" required>
+            
+                <div class="phone-input" >
+                    <select>
+                        <option value="+91">🇮🇳 +91</option>
+                        <option value="+1">🇺🇸 +1</option>
+                        <option value="+44">🇬🇧 +44</option>
+                        <option value="+61">🇦🇺 +61</option>
+                    </select>
+                    <input type="tel" name="phone" placeholder="Contact Number" required>
+                </div>
+
+                <input type="email" name="email" placeholder="Email Address" required>
+                <input type="text" name="project_location" placeholder="Project Location" required>
+                <button type="submit" class="submit-btn">Submit</button>
+            </form>
+        </div>
+    </div>
+    <!-- Customize Popup -->
+    <div class="popup-overlay" id="popupCustomizeForm">
+        <div class="popup">
+            <div class="popup-header">
+                <h2>Get 100% Customized Interiors</h2>
+                <button class="close-btn" onclick="closeForm('popupCustomizeForm')">×</button>
+            </div>
+            <hr>
+            <p>Please fill out the enquiry below and we will get back to you as soon as possible</p>
+            <form id="enquiryCustomizeForm" onsubmit="submitForm(event, 'customize_home')">
+                <input type="text" name="name" placeholder="Name" required>
+            
+                <div class="phone-input" >
+                    <select>
+                        <option value="+91">🇮🇳 +91</option>
+                        <option value="+1">🇺🇸 +1</option>
+                        <option value="+44">🇬🇧 +44</option>
+                        <option value="+61">🇦🇺 +61</option>
+                    </select>
+                    <input type="tel" name="phone" placeholder="Contact Number" required>
+                </div>
+
+                <input type="email" name="email" placeholder="Email Address" required>
+                <input type="text" name="project_location" placeholder="Project Location" required>
+                <button type="submit" class="submit-btn">Submit</button>
+            </form>
+        </div>
+    </div>
+    <!-- Free Estimate Popup -->
+    <div class="popup-overlay" id="popupFloatingForm">
+        <div class="popup">
+            <div class="popup-header">
+                <h2>GET FREE ESTIMATE</h2>
+                <button class="close-btn" onclick="closeForm('popupFloatingForm')">×</button>
+            </div>
+            <hr>
+            <p>Please fill out the enquiry below and we will get back to you as soon as possible</p>
+            <form id="enquiryFloatingForm" onsubmit="submitForm(event, 'free_estimate')">
+                <input type="text" name="name" placeholder="Name" required>
+            
+                <div class="phone-input">
+                    <select>
+                        <option value="+91">🇮🇳 +91</option>
+                        <option value="+1">🇺🇸 +1</option>
+                        <option value="+44">🇬🇧 +44</option>
+                        <option value="+61">🇦🇺 +61</option>
+                    </select>
+                    <input type="tel" name="phone" placeholder="Contact Number" required>
+                </div>
+
+                <input type="email" name="email" placeholder="Email Address" required>
+                <input type="text" name="project_location" placeholder="Project Location" required>
+                <button type="submit" class="submit-btn">Submit</button>
+            </form>
+        </div>
+    </div>
+    <!-- Single Script File -->
+    <script src="popupForms.js"></script>
 
     <footer>
         <div class="footer-top">
@@ -594,7 +870,7 @@ footer .footer-bottom .social-links a img:hover {
     <a href="mailto:contact@company.com" class="mail-button">
         <i class="fas fa-envelope"></i> Send Mail
     </a>
-    <a href="#" class="estimate-button">Free Estimate</a>
+    <a class="free_estimate" onclick="openEstimateForm()">Free Estimate</a>
 </div>
 </footer>
 </body>

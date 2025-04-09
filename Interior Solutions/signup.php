@@ -7,44 +7,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = htmlspecialchars($_POST['password']);
     $confirm_password = htmlspecialchars($_POST['confirm_password']);
 
-    // Validate passwords
+    // First check if passwords match
     if ($password !== $confirm_password) {
         $registration_message = "<p style='color: red; text-align: center;'>Passwords do not match. Please try again.</p>";
     } else {
-        // Hash password
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-        // Database connection
-        $conn = new mysqli('localhost', 'root', '', 'interior_solutions');
-
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
-
-        // Check if email already exists
-        $sql = "SELECT * FROM users WHERE email = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param('s', $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-            $registration_message = "<p style='color: red; text-align: center;'>Email is already registered. Please try another.</p>";
+        // Check password strength
+        if (strlen($password) < 8) {
+            $registration_message = "<p style='color: red; text-align: center;'>Password must be at least 8 characters long.</p>";
+        } elseif (!preg_match('/[A-Z]/', $password)) {
+            $registration_message = "<p style='color: red; text-align: center;'>Password must contain at least one uppercase letter.</p>";
+        } elseif (!preg_match('/[a-z]/', $password)) {
+            $registration_message = "<p style='color: red; text-align: center;'>Password must contain at least one lowercase letter.</p>";
+        } elseif (!preg_match('/[0-9]/', $password)) {
+            $registration_message = "<p style='color: red; text-align: center;'>Password must contain at least one digit.</p>";
+        } elseif (!preg_match('/[\W_]/', $password)) {
+            // \W matches any non-word character (special chars), _ is also included just in case
+            $registration_message = "<p style='color: red; text-align: center;'>Password must contain at least one special character.</p>";
         } else {
-            // Insert user into database
-            $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param('sss', $username, $email, $hashed_password);
+            // All checks passed, hash the password
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            if ($stmt->execute()) {
-                $registration_message = "<p style='color: green; text-align: center;'>Registration successful! You can now log in.</p>";
-            } else {
-                $registration_message = "<p style='color: red; text-align: center;'>An error occurred. Please try again.</p>";
+            // Database connection
+            $conn = new mysqli('localhost', 'root', '', 'interior_solutions');
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
             }
-        }
 
-        $stmt->close();
-        $conn->close();
+            // Check if email already exists
+            $sql = "SELECT * FROM users WHERE email = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('s', $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $registration_message = "<p style='color: red; text-align: center;'>Email is already registered. Please try another.</p>";
+            } else {
+                // Insert user into database
+                $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param('sss', $username, $email, $hashed_password);
+
+                if ($stmt->execute()) {
+                    $registration_message = "<p style='color: green; text-align: center;'>Registration successful! You can now log in.</p>";
+                } else {
+                    $registration_message = "<p style='color: red; text-align: center;'>An error occurred. Please try again.</p>";
+                }
+            }
+
+            $stmt->close();
+            $conn->close();
+        }
     }
 }
 ?>

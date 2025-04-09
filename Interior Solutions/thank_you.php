@@ -1,9 +1,72 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+// Connect to DB
+$conn = new mysqli("localhost", "root", "", "interior_solutions");
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$user_id = $_SESSION['user_id'];
+
+// Check if we have newly inserted booking IDs in session
+$newBookingIds = isset($_SESSION['recent_booking_ids']) ? $_SESSION['recent_booking_ids'] : [];
+
+$orders = [];
+if (!empty($newBookingIds)) {
+    // Build placeholders for the IN clause
+    $placeholders = implode(',', array_fill(0, count($newBookingIds), '?'));
+    $types = str_repeat('i', count($newBookingIds)); // all integers
+
+    $sql = "SELECT * 
+            FROM bookings
+            WHERE user_id = ?
+              AND id IN ($placeholders)
+            ORDER BY created_at DESC";
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        die("Prepare failed: " . $conn->error);
+    }
+
+    // Merge user_id with the newBookingIds for binding
+    $bindValues = array_merge([$user_id], $newBookingIds);
+
+    // Build the bind_param dynamic arguments
+    // e.g. 'i' + 'i' repeated for each booking ID
+    $bindTypes = 'i' . $types;
+
+    // We need to pass them by reference for bind_param
+    $refs = [];
+    $refs[] = &$bindTypes;
+    foreach ($bindValues as $key => $val) {
+        $refs[] = &$bindValues[$key];
+    }
+
+    // Use call_user_func_array to bind
+    call_user_func_array([$stmt, 'bind_param'], $refs);
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $orders[] = $row;
+    }
+    $stmt->close();
+}
+
+// Optionally, we can unset so it won't show again if page is refreshed
+// unset($_SESSION['recent_booking_ids']);
+
+$conn->close();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery</title>
+    <title>Order Confirmation</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
         body {
@@ -139,141 +202,64 @@
         .logout-btn:hover {
             background-color: rgb(66, 119, 121);
         }
-        
-        .hero {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: url('img/gallery.jpg') no-repeat center center/cover;
-            padding: 100px 50px;
-            height: 60vh;
-            color: white;
-            position: relative;
-        }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 0;
-        }
+        .main-container {
+        /* Put your main content container separate from the footer container */
+        margin-top: 50px;
+        text-align: center;
+        margin-bottom: 50px; /* Ensure enough space above footer */
+      }
+      .header-text {
+        color: green;
+        margin-bottom: 10px;
+      }
+      /* Outer box styling */
+      .order-box {
+        border: 2px solid #aaa;       /* Thicker border */
+        border-radius: 10px;
+        background: #f2f2f2;         /* New background color inside the box */
+        padding: 30px;               /* More padding inside */
+        max-width: 900px;           /* Wider max width so table doesn't overflow */
+        margin: 30px auto;          /* Spacing from top/bottom */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Deeper shadow */
+      }
+      .order-box h3 {
+        margin-bottom: 20px;
+        color: #333;
+      }
+      /* Table styling */
+      .order-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px auto;          /* Add some horizontal spacing from box edges */
+      }
+      .order-table th, .order-table td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        vertical-align: middle;
+      }
+      .order-table th {
+        background-color: #343a40;
+        color: #fff;
+      }
+      /* Home button styling */
+      .home-btn {
+        margin-top: 20px;
+        margin-bottom: 30px;
+        color: #fff;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 5px;
+        font-size: 15px;
+        cursor: pointer;
+        text-decoration: none;
+        background-color: rgb(27, 40, 42);
+      }
+      .home-btn:hover {
+        background-color: rgb(66, 119, 121);
+      }
 
-        .hero .text {
-            position: relative;
-            z-index: 1;
-            max-width: 500px;
-        }
-
-        .hero h1 {
-            font-size: 42px;
-            margin-bottom: 15px;
-        }
-
-        .hero p {
-            font-size: 32px;
-            margin-bottom: 20px;
-        }
-
-        /* Popup Form */
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .popup {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            width: 430px;
-            text-align: center;
-            position: relative;
-        }
-
-        .popup-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .popup h2 {
-            font-size: 22px;
-            margin: 0;
-            color: #333;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #555;
-        }
-
-        .popup p {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        /* Form Styling */
-        form input,
-        .phone-input {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .phone-input {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .phone-input select {
-            border: none;
-            background: #f3f3f3;
-            padding: 10px;
-            font-size: 14px;
-        }
-
-        .phone-input input {
-            flex: 1;
-            border: none;
-            padding: 10px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            background: rgb(27, 40, 42);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .submit-btn:hover {
-            background: rgb(66, 119, 121);
-        }
-        
-        footer {
+      footer {
             background-color: #f2f2f2;
             color: #333;
             padding-top: 20px;
@@ -323,41 +309,6 @@
 
         footer .footer-bottom a:hover {
             color: #ddd;
-        }
-
-        .floating-buttons {
-            position: fixed;
-            bottom: 100px; /* Move above the footer */
-            right: 20px;
-            z-index: 999; /* Ensure it doesn't overlap essential elements */
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .floating-buttons a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color:rgb(27, 40, 42);
-            color: white;
-            padding: 12px 18px;
-            border-radius: 50px;
-            font-size: 14px;
-            text-decoration: none;
-            font-weight: 500;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .floating-buttons a:hover {
-            background-color:rgb(66, 119, 121);
-            transform: translateY(-3px);
-        }
-
-        .floating-buttons a i {
-            margin-right: 8px;
-            font-size: 18px;
         }
 
         footer .footer-bottom {
@@ -411,9 +362,9 @@
 </head>
 <body>
     <header>
-    <div class="logo">
-        <a href="dashboard.php"><img src="img/interior.png" alt="Interior Solutions Logo"></a>
-    </div>
+        <div class="logo">
+            <a href="dashboard.php"><img src="img/interior.png" alt="Interior Solutions Logo"></a>
+        </div>
         <nav>
             <a href="dashboard.php">Home</a>
             <div class="dropdown">
@@ -424,8 +375,7 @@
                 </ul>
             </div>
             <a href="about_us.php">About Us</a>
-            <!-- Products Dropdown -->
-             <div class="dropdown">
+            <div class="dropdown">
                 <a href="#" class="dropdown-toggle">Products</a>
                 <ul class="dropdown-menu">
                     <li><a href="kitchen.php">Kitchen</a></li>
@@ -436,11 +386,11 @@
                     <li><a href="kids_room.php">Kids Room</a></li>
                 </ul>
             </div>
-            <a href="gallery.php" class="active">Gallery</a>
+            <a href="gallery.php">Gallery</a>
             <a href="contact.php">Contact</a>
             <a href="orders.php">Orders</a>
         </nav>
-
+    
         <!-- Wishlist and Cart Icons -->
         <div class="nav-icons">
             <a href="wishlist.php" class="wishlist-icon">
@@ -451,44 +401,63 @@
             </a>
         </div>
 
-    <a href="logout.php" class="logout-btn">Logout</a>
+        <a href="logout.php" class="logout-btn">Logout</a>
     </header>
-    <div class="hero">
-        <div class="text">
-            <h1>YOUR HOME. OUR DESIGN</h1>
-            <p>Expertly crafted interiors by professionals</p>
-        </div>
-    </div>
-    <!-- Free Estimate Popup -->
-    <div class="popup-overlay" id="popupFloatingForm">
-        <div class="popup">
-            <div class="popup-header">
-                <h2>GET FREE ESTIMATE</h2>
-                <button class="close-btn" onclick="closeForm('popupFloatingForm')">×</button>
-            </div>
-            <hr>
-            <p>Please fill out the enquiry below and we will get back to you as soon as possible</p>
-            <form id="enquiryFloatingForm" onsubmit="submitForm(event, 'free_estimate')">
-                <input type="text" name="name" placeholder="Name" required>
-            
-                <div class="phone-input">
-                    <select>
-                        <option value="+91">🇮🇳 +91</option>
-                        <option value="+1">🇺🇸 +1</option>
-                        <option value="+44">🇬🇧 +44</option>
-                        <option value="+61">🇦🇺 +61</option>
-                    </select>
-                    <input type="tel" name="phone" placeholder="Contact Number" required>
-                </div>
+    <div class="main-container container">
+    <h1 class="header-text">Thank you. Your order has been received!</h1>
+    <p>We have received your booking. Our team will contact you soon.</p>
+    <p>Check your email for the booking confirmation message.</p>
 
-                <input type="email" name="email" placeholder="Email Address" required>
-                <input type="text" name="project_location" placeholder="Project Location" required>
-                <button type="submit" class="submit-btn">Submit</button>
-            </form>
-        </div>
-    </div>
-    <!-- Single Script File -->
-    <script src="popupForms.js"></script>
+    <?php if (empty($orders)): ?>
+      <div class="order-box">
+        <h3>No New Orders Found</h3>
+        <p>You have no newly placed orders.<br>
+           If you just placed an order and don't see it here, please refresh or check again.</p>
+      </div>
+    <?php else: ?>
+      <div class="order-box">
+        <h3>Order Details</h3>
+        <p>Order Date: <?php echo date('F j, Y'); ?></p>
+        <table class="order-table">
+          <thead>
+            <tr>
+              <th>Design Image</th>
+              <th>Design Name</th>
+              <th>Price</th>
+              <th>Amount Paid</th>
+              <th>Remaining</th>
+              <th>Payment Method</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($orders as $o): ?>
+              <tr>
+                <td>
+                  <?php if (!empty($o['design_image'])): ?>
+                    <img src="<?php echo htmlspecialchars($o['design_image']); ?>"
+                         alt="Design Image" 
+                         style="width:100px; height:60px; object-fit:cover; border-radius:4px;">
+                  <?php else: ?>
+                    N/A
+                  <?php endif; ?>
+                </td>
+                <td><?php echo htmlspecialchars($o['design_name']); ?></td>
+                <td>₹<?php echo number_format($o['design_price'], 2); ?></td>
+                <td>₹<?php echo number_format($o['amount_paid'], 2); ?></td>
+                <td>₹<?php echo number_format($o['remaining_amount'], 2); ?></td>
+                <td><?php echo htmlspecialchars($o['payment_method']); ?></td>
+                <td><?php echo htmlspecialchars($o['status']); ?></td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+        <p style="font-weight:bold; margin-top:10px;">Total Amount Paid: (Your 20% deposit)</p>
+      </div>
+    <?php endif; ?>
+
+    <a href="dashboard.php" class="home-btn">Go to Homepage</a>
+</div>
     <footer>
         <div class="footer-top">
             <div class="container">
@@ -550,15 +519,6 @@
                 </div>
             </div>
         </div>
-<div class="floating-buttons">
-    <a href="https://wa.me/7204941908" class="whatsapp-button" target="_blank">
-        <i class="fab fa-whatsapp"></i> WhatsApp
-    </a>
-    <a href="mailto:contact@company.com" class="mail-button">
-        <i class="fas fa-envelope"></i> Send Mail
-    </a>
-    <a class="free_estimate" onclick="openEstimateForm()">Free Estimate</a>
-</div>
-</footer>
+    </footer>
 </body>
 </html>

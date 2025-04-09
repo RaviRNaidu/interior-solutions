@@ -1,16 +1,57 @@
+<?php
+// wishlist.php
+ob_start(); // Start output buffering
+session_start();
+
+// Redirect to login if the user is not logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+
+// Database connection
+$conn = new mysqli("localhost", "root", "", "interior_solutions");
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch wishlist items for the current user
+$sql = "SELECT wishlist.id AS wishlist_id, designs.id AS design_id, designs.image, designs.name, designs.price 
+        FROM wishlist 
+        JOIN designs ON wishlist.design_id = designs.id 
+        WHERE wishlist.user_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$wishlist_items = [];
+while ($row = $result->fetch_assoc()) {
+    $wishlist_items[] = $row;
+}
+
+$stmt->close();
+$conn->close();
+ob_end_flush();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery</title>
+    <title>My Wishlist</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
             color: #333;
+            background-color: #f8f9fa;
         }
 
         header {
@@ -139,140 +180,104 @@
         .logout-btn:hover {
             background-color: rgb(66, 119, 121);
         }
-        
-        .hero {
+
+        /* Wishlist Page Styles */
+        .wishlist-container {
+            text-align: center;
+            margin: 50px auto;
+            width: 80%;
+        }
+        .wishlist-logo {
+            width: 75px;
+            margin-right: 10px;
+        }   
+        .wishlist-header {
             display: flex;
+            justify-content: center;
             align-items: center;
-            justify-content: space-between;
-            background: url('img/gallery.jpg') no-repeat center center/cover;
-            padding: 100px 50px;
-            height: 60vh;
-            color: white;
-            position: relative;
+            margin-bottom: 30px;
         }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
+        .wishlist-header h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+        }
+        table {
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 0;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
-
-        .hero .text {
-            position: relative;
-            z-index: 1;
-            max-width: 500px;
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
         }
-
-        .hero h1 {
-            font-size: 42px;
-            margin-bottom: 15px;
+        th {
+            background-color: #343a40;
+            color: white;
+            font-weight: bold;
         }
-
-        .hero p {
-            font-size: 32px;
+        td img {
+            width: 270px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .btn {
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .move-to-cart {
+            background-color: #28a745;
+            color: white;
+            border: none;
+        }
+        .btn-remove {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+        /* Empty Wishlist Styles */
+        .empty-wishlist {
+            text-align: center;
+            margin-top: 100px;
+        }
+        .empty-wishlist img {
+            width: 400px;
             margin-bottom: 20px;
         }
-
-        /* Popup Form */
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .popup {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            width: 430px;
-            text-align: center;
-            position: relative;
-        }
-
-        .popup-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .popup h2 {
+        .empty-wishlist h3 {
             font-size: 22px;
-            margin: 0;
-            color: #333;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
+            margin-top: 20px;
             color: #555;
         }
-
-        .popup p {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 20px;
+        .empty-wishlist p {
+            color: #777;
+            font-size: 16px;
         }
-
-        /* Form Styling */
-        form input,
-        .phone-input {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .phone-input {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .phone-input select {
-            border: none;
-            background: #f3f3f3;
-            padding: 10px;
-            font-size: 14px;
-        }
-
-        .phone-input input {
-            flex: 1;
-            border: none;
-            padding: 10px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            background: rgb(27, 40, 42);
+        .explore-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: rgb(27, 40, 42);
             color: white;
             border: none;
-            padding: 12px;
             border-radius: 5px;
-            font-size: 16px;
             cursor: pointer;
-            margin-top: 10px;
+            text-decoration: none;
+        }
+        .explore-btn:hover {
+            background-color:rgb(66, 119, 121);
         }
 
-        .submit-btn:hover {
-            background: rgb(66, 119, 121);
-        }
-        
         footer {
             background-color: #f2f2f2;
             color: #333;
@@ -325,41 +330,6 @@
             color: #ddd;
         }
 
-        .floating-buttons {
-            position: fixed;
-            bottom: 100px; /* Move above the footer */
-            right: 20px;
-            z-index: 999; /* Ensure it doesn't overlap essential elements */
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .floating-buttons a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color:rgb(27, 40, 42);
-            color: white;
-            padding: 12px 18px;
-            border-radius: 50px;
-            font-size: 14px;
-            text-decoration: none;
-            font-weight: 500;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .floating-buttons a:hover {
-            background-color:rgb(66, 119, 121);
-            transform: translateY(-3px);
-        }
-
-        .floating-buttons a i {
-            margin-right: 8px;
-            font-size: 18px;
-        }
-
         footer .footer-bottom {
             background-color: #333;
             color: white;
@@ -409,11 +379,11 @@
         }
     </style>
 </head>
-<body>
+<body data-user="<?php echo $_SESSION['user_id']; ?>">
     <header>
-    <div class="logo">
-        <a href="dashboard.php"><img src="img/interior.png" alt="Interior Solutions Logo"></a>
-    </div>
+        <div class="logo">
+            <a href="dashboard.php"><img src="img/interior.png" alt="Interior Solutions Logo"></a>
+        </div>
         <nav>
             <a href="dashboard.php">Home</a>
             <div class="dropdown">
@@ -424,8 +394,7 @@
                 </ul>
             </div>
             <a href="about_us.php">About Us</a>
-            <!-- Products Dropdown -->
-             <div class="dropdown">
+            <div class="dropdown">
                 <a href="#" class="dropdown-toggle">Products</a>
                 <ul class="dropdown-menu">
                     <li><a href="kitchen.php">Kitchen</a></li>
@@ -436,14 +405,14 @@
                     <li><a href="kids_room.php">Kids Room</a></li>
                 </ul>
             </div>
-            <a href="gallery.php" class="active">Gallery</a>
+            <a href="gallery.php">Gallery</a>
             <a href="contact.php">Contact</a>
             <a href="orders.php">Orders</a>
         </nav>
-
+    
         <!-- Wishlist and Cart Icons -->
         <div class="nav-icons">
-            <a href="wishlist.php" class="wishlist-icon">
+            <a href="#" class="wishlist-icon">
                 <img src="img/heart.png" alt="Wishlist">
             </a>
             <a href="cart.php" class="cart-icon">
@@ -451,44 +420,86 @@
             </a>
         </div>
 
-    <a href="logout.php" class="logout-btn">Logout</a>
+        <a href="logout.php" class="logout-btn">Logout</a>
     </header>
-    <div class="hero">
-        <div class="text">
-            <h1>YOUR HOME. OUR DESIGN</h1>
-            <p>Expertly crafted interiors by professionals</p>
-        </div>
+    <div class="wishlist-container">
+    <div class="wishlist-header">
+        <img src="img/wishlist_logo.png" class="wishlist-logo" alt="Wishlist Logo">
+        <h2>My Wishlist</h2>
     </div>
-    <!-- Free Estimate Popup -->
-    <div class="popup-overlay" id="popupFloatingForm">
-        <div class="popup">
-            <div class="popup-header">
-                <h2>GET FREE ESTIMATE</h2>
-                <button class="close-btn" onclick="closeForm('popupFloatingForm')">×</button>
-            </div>
-            <hr>
-            <p>Please fill out the enquiry below and we will get back to you as soon as possible</p>
-            <form id="enquiryFloatingForm" onsubmit="submitForm(event, 'free_estimate')">
-                <input type="text" name="name" placeholder="Name" required>
-            
-                <div class="phone-input">
-                    <select>
-                        <option value="+91">🇮🇳 +91</option>
-                        <option value="+1">🇺🇸 +1</option>
-                        <option value="+44">🇬🇧 +44</option>
-                        <option value="+61">🇦🇺 +61</option>
-                    </select>
-                    <input type="tel" name="phone" placeholder="Contact Number" required>
-                </div>
 
-                <input type="email" name="email" placeholder="Email Address" required>
-                <input type="text" name="project_location" placeholder="Project Location" required>
-                <button type="submit" class="submit-btn">Submit</button>
-            </form>
-        </div>
-    </div>
-    <!-- Single Script File -->
-    <script src="popupForms.js"></script>
+    <?php if (count($wishlist_items) > 0): ?>
+      <table>
+        <tr>
+          <th>Image</th>
+          <th>Design Name</th>
+          <th>Price</th>
+          <th>Actions</th>
+        </tr>
+        <?php foreach ($wishlist_items as $item): ?>
+          <tr>
+            <td><img src="<?php echo $item['image']; ?>" alt="<?php echo htmlspecialchars($item['name']); ?>"></td>
+            <td><?php echo htmlspecialchars($item['name']); ?></td>
+            <td>₹<?php echo number_format($item['price'], 2); ?></td>
+            <td>
+              <button class="btn move-to-cart" data-wishlist-id="<?php echo $item['wishlist_id']; ?>" data-design-id="<?php echo $item['design_id']; ?>">Move to Cart</button>
+              <button class="btn btn-remove" onclick="removeFromWishlist(<?php echo $item['wishlist_id']; ?>)">Remove</button>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+      </table>
+    <?php else: ?>
+      <div class="empty-wishlist">
+        <img src="img/empty-wishlist.png" alt="Empty Wishlist">
+        <h3>Looks like you have not added anything to your wishlist.</h3>
+        <p>Go ahead and explore top designs.</p>
+        <a href="kitchen.php" class="explore-btn">Explore Designs</a>
+      </div>
+    <?php endif; ?>
+  </div>
+
+  <script>
+    function moveToCart(designId) {
+      $.post("move_to_cart.php", { design_id: designId }, function(response) {
+        if (response === "success") {
+          location.reload();
+        } else {
+          alert("Failed to move item to cart.");
+        }
+      });
+    }
+
+    $(document).on("click", ".move-to-cart", function () {
+    let wishlistId = $(this).data("wishlist-id");
+    let designId = $(this).data("design-id");
+
+    $.ajax({
+        url: "move_to_cart.php",
+        type: "POST",
+        data: { wishlist_id: wishlistId, design_id: designId },
+        success: function (response) {
+            if (response === "success") {
+                alert("Moved to Cart!");
+                location.reload(); // Refresh wishlist page
+            } else if (response === "exists") {
+                alert("This item is already in your cart.");
+            } else {
+                alert("Failed to move to cart.");
+            }
+        }
+    });
+});
+
+    function removeFromWishlist(wishlistId) {
+        $.post("remove_from_wishlist.php", { wishlist_id: wishlistId }, function(response) {
+            if ($.trim(response) === "success") {
+                location.reload();
+            } else {
+                alert("Failed to remove item.");
+            }
+        });
+    }
+  </script>
     <footer>
         <div class="footer-top">
             <div class="container">
@@ -550,15 +561,6 @@
                 </div>
             </div>
         </div>
-<div class="floating-buttons">
-    <a href="https://wa.me/7204941908" class="whatsapp-button" target="_blank">
-        <i class="fab fa-whatsapp"></i> WhatsApp
-    </a>
-    <a href="mailto:contact@company.com" class="mail-button">
-        <i class="fas fa-envelope"></i> Send Mail
-    </a>
-    <a class="free_estimate" onclick="openEstimateForm()">Free Estimate</a>
-</div>
-</footer>
+    </footer>
 </body>
 </html>

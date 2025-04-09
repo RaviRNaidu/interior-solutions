@@ -1,16 +1,49 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+$conn = new mysqli("localhost", "root", "", "interior_solutions");
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch cart items
+$sql = "SELECT cart.id AS cart_id, designs.id AS design_id, designs.image, designs.name, designs.price 
+        FROM cart 
+        JOIN designs ON cart.design_id = designs.id 
+        WHERE cart.user_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$cart_items = [];
+while ($row = $result->fetch_assoc()) {
+    $cart_items[] = $row;
+}
+
+$stmt->close();
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery</title>
+    <title>My Cart</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
             color: #333;
+            background-color: #f8f9fa;
         }
 
         header {
@@ -139,140 +172,168 @@
         .logout-btn:hover {
             background-color: rgb(66, 119, 121);
         }
-        
-        .hero {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: url('img/gallery.jpg') no-repeat center center/cover;
-            padding: 100px 50px;
-            height: 60vh;
-            color: white;
-            position: relative;
-        }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 0;
-        }
-
-        .hero .text {
-            position: relative;
-            z-index: 1;
-            max-width: 500px;
-        }
-
-        .hero h1 {
-            font-size: 42px;
-            margin-bottom: 15px;
-        }
-
-        .hero p {
-            font-size: 32px;
-            margin-bottom: 20px;
-        }
-
-        /* Popup Form */
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .popup {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            width: 430px;
+        /* Cart Page Styles */
+        .cart-container {
             text-align: center;
-            position: relative;
+            margin: 50px auto;
+            width: 80%;
         }
-
-        .popup-header {
+        .cart-logo {
+            width: 75px;
+            margin-right: 10px;
+        }
+        .cart-header {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
+            margin-bottom: 30px;
         }
-
-        .popup h2 {
-            font-size: 22px;
-            margin: 0;
-            color: #333;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
+        .cart-header h2 {
             font-size: 24px;
-            cursor: pointer;
-            color: #555;
+            font-weight: bold;
+            margin: 0;
         }
-
-        .popup p {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        /* Form Styling */
-        form input,
-        .phone-input {
+    
+        /* Table Styling */
+        .cart-table {
             width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .phone-input {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            border-collapse: separate; /* Change collapse to separate */
+            border-spacing: 0 15px; /* Add spacing between rows */
+            background: white;
+            border-radius: 10px;
             overflow: hidden;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .phone-input select {
-            border: none;
-            background: #f3f3f3;
-            padding: 10px;
-            font-size: 14px;
+        .cart-table th, .cart-table td {
+            padding: 15px;
+            text-align: center;
+            border: none; /* Remove all borders */
+            vertical-align: middle; /* Ensures vertical alignment */
+        }
+        /* Center align text and button */
+        .cart-table td {
+            vertical-align: middle; /* Align text and button with image */
         }
 
-        .phone-input input {
-            flex: 1;
-            border: none;
-            padding: 10px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            background: rgb(27, 40, 42);
+        /* Style remove button */
+        .cart-table .remove-btn {
+            padding: 8px 15px;
+            background-color: red;
             color: white;
             border: none;
-            padding: 12px;
             border-radius: 5px;
-            font-size: 16px;
             cursor: pointer;
-            margin-top: 10px;
         }
 
-        .submit-btn:hover {
-            background: rgb(66, 119, 121);
+        .cart-table .remove-btn:hover {
+            background-color: darkred;
         }
-        
+
+        .cart-table th {
+            background-color: #343a40 !important;
+            color: white !important;
+            font-weight: bold;
+        }
+
+        /* Adjust table row background for a cleaner look */
+        .cart-table tbody tr {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            display: table-row;
+        }
+
+        .cart-table tbody tr:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Ensure the table fits well */
+        .cart-container {
+            width: 90%;
+            margin: auto;
+        }
+
+        /* Fix Image Not Displaying */
+        .cart-image {
+            width: 230px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        /* Empty Cart Styles */
+        .empty-cart {
+            text-align: center;
+            margin-top: 100px;
+            margin-bottom: 100px; /* Add bottom margin to prevent overlap */
+        }
+    .empty-cart img {
+      width: 270px;
+      margin-bottom: 20px;
+    }
+    .empty-cart h3 {
+      font-size: 22px;
+      margin-top: 20px;
+      color: #555;
+    }
+    .empty-cart p {
+      color: #777;
+      font-size: 16px;
+    }
+    .explore-btn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: rgb(27, 40, 42);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .explore-btn:hover {
+      background-color: rgb(66, 119, 121);
+    }
+
+    /* Cart Totals */
+    .cart-totals {
+      max-width: 400px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    .cart-totals:hover {
+      transform: scale(1.02);
+    }
+    .cart-totals h3 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .totals-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 16px;
+    }
+    .totals-divider {
+      border-top: 1px solid #ddd;
+      margin: 8px 0;
+    }
+    .checkout-btn {
+      width: 100%;
+      margin-top: 15px;
+      background-color: rgb(27, 40, 42);
+    }
+    .checkout-btn:hover {
+      background-color: rgb(66, 119, 121);
+    }
+
         footer {
             background-color: #f2f2f2;
             color: #333;
@@ -323,41 +384,6 @@
 
         footer .footer-bottom a:hover {
             color: #ddd;
-        }
-
-        .floating-buttons {
-            position: fixed;
-            bottom: 100px; /* Move above the footer */
-            right: 20px;
-            z-index: 999; /* Ensure it doesn't overlap essential elements */
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .floating-buttons a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color:rgb(27, 40, 42);
-            color: white;
-            padding: 12px 18px;
-            border-radius: 50px;
-            font-size: 14px;
-            text-decoration: none;
-            font-weight: 500;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .floating-buttons a:hover {
-            background-color:rgb(66, 119, 121);
-            transform: translateY(-3px);
-        }
-
-        .floating-buttons a i {
-            margin-right: 8px;
-            font-size: 18px;
         }
 
         footer .footer-bottom {
@@ -411,9 +437,9 @@
 </head>
 <body>
     <header>
-    <div class="logo">
-        <a href="dashboard.php"><img src="img/interior.png" alt="Interior Solutions Logo"></a>
-    </div>
+        <div class="logo">
+            <a href="dashboard.php"><img src="img/interior.png" alt="Interior Solutions Logo"></a>
+        </div>
         <nav>
             <a href="dashboard.php">Home</a>
             <div class="dropdown">
@@ -424,8 +450,7 @@
                 </ul>
             </div>
             <a href="about_us.php">About Us</a>
-            <!-- Products Dropdown -->
-             <div class="dropdown">
+            <div class="dropdown">
                 <a href="#" class="dropdown-toggle">Products</a>
                 <ul class="dropdown-menu">
                     <li><a href="kitchen.php">Kitchen</a></li>
@@ -436,59 +461,161 @@
                     <li><a href="kids_room.php">Kids Room</a></li>
                 </ul>
             </div>
-            <a href="gallery.php" class="active">Gallery</a>
+            <a href="gallery.php">Gallery</a>
             <a href="contact.php">Contact</a>
             <a href="orders.php">Orders</a>
         </nav>
-
+    
         <!-- Wishlist and Cart Icons -->
         <div class="nav-icons">
             <a href="wishlist.php" class="wishlist-icon">
                 <img src="img/heart.png" alt="Wishlist">
             </a>
-            <a href="cart.php" class="cart-icon">
+            <a href="#" class="cart-icon">
                 <img src="img/cart.png" alt="Cart">
             </a>
         </div>
 
-    <a href="logout.php" class="logout-btn">Logout</a>
+        <a href="logout.php" class="logout-btn">Logout</a>
     </header>
-    <div class="hero">
-        <div class="text">
-            <h1>YOUR HOME. OUR DESIGN</h1>
-            <p>Expertly crafted interiors by professionals</p>
-        </div>
-    </div>
-    <!-- Free Estimate Popup -->
-    <div class="popup-overlay" id="popupFloatingForm">
-        <div class="popup">
-            <div class="popup-header">
-                <h2>GET FREE ESTIMATE</h2>
-                <button class="close-btn" onclick="closeForm('popupFloatingForm')">×</button>
+    <div class="container mt-5">
+        <div class="cart-container">
+            <div class="cart-header">
+                <img src="img/shopping-bag.png" class="cart-logo" alt="Cart Logo">
+                <h2>My Cart</h2>
             </div>
-            <hr>
-            <p>Please fill out the enquiry below and we will get back to you as soon as possible</p>
-            <form id="enquiryFloatingForm" onsubmit="submitForm(event, 'free_estimate')">
-                <input type="text" name="name" placeholder="Name" required>
-            
-                <div class="phone-input">
-                    <select>
-                        <option value="+91">🇮🇳 +91</option>
-                        <option value="+1">🇺🇸 +1</option>
-                        <option value="+44">🇬🇧 +44</option>
-                        <option value="+61">🇦🇺 +61</option>
-                    </select>
-                    <input type="tel" name="phone" placeholder="Contact Number" required>
+
+            <!-- Cart Table -->
+            <div id="cart-content">
+                <?php if (!empty($cart_items)): ?>
+                    <table class="table table-bordered cart-table">
+                        <thead>
+                            <tr>
+                                <th>Design</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($cart_items as $item): ?>
+                        <tr data-cart-id="<?= $item['cart_id'] ?>" data-price="<?= $item['price'] ?>">
+                        <td>
+                            <img src="<?php echo $item['image']; ?>" 
+                                alt="Design Image" 
+                                class="cart-image">
+                            </td>
+                            <td><?= htmlspecialchars($item['name']) ?></td>
+                            <td>₹<?= number_format($item['price'], 2) ?></td>
+                            <td>
+                                <button class="btn btn-danger remove-from-cart" 
+                                data-cart-id="<?= $item['cart_id'] ?>">Remove</button>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+
+                <!-- Cart Totals -->
+                <div class="cart-totals">
+                    <h3>Cart Totals</h3>
+                    <div id="totals-list">
+                        <?php foreach ($cart_items as $item): ?>
+                            <div class="totals-row">
+                                <span><?= $item['name'] ?></span>
+                                <span>₹<?= number_format($item['price'], 2) ?></span>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <div class="totals-divider"></div>
+                    <div class="totals-row">
+                        <strong>Subtotal:</strong>
+                        <strong id="subtotal">₹0.00</strong>
+                    </div>
+                    <div class="totals-row">
+                        <strong>To Pay Now (20%):</strong>
+                        <strong id="to-pay">₹0.00</strong>
+                    </div>
+                    <div class="totals-divider"></div>
+                    <div class="totals-row">
+                        <strong>Total Amount:</strong>
+                        <strong id="total-amount">₹0.00</strong>
+                    </div>
+                    <button class="btn btn-dark checkout-btn">Proceed to Checkout</button>
                 </div>
 
-                <input type="email" name="email" placeholder="Email Address" required>
-                <input type="text" name="project_location" placeholder="Project Location" required>
-                <button type="submit" class="submit-btn">Submit</button>
-            </form>
+                <?php else: ?>
+                <div class="empty-cart">
+                    <img src="img/empty_cart.png" alt="Empty Cart">
+                    <h3>Looks like you have not added anything to your cart.</h3>
+                    <p>Go ahead and explore top designs.</p>
+                    <a href="kitchen.php" class="explore-btn">Explore Designs</a>
+                </div>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
-    <!-- Single Script File -->
-    <script src="popupForms.js"></script>
+
+    <script>
+$(document).ready(function () {
+    function updateCartTotals() {
+        let subtotal = 0;
+
+        $("#totals-list").empty();
+        $("tbody tr").each(function () {
+            let designName = $(this).find("td:nth-child(2)").text();
+            let price = parseFloat($(this).data("price"));
+            subtotal += price;
+
+            // Append design names and prices in Cart Totals
+            $("#totals-list").append(`<div class="totals-row"><span>${designName}</span><span>₹${price.toFixed(2)}</span></div>`);
+        });
+
+        let toPayNow = subtotal * 0.2;
+        let totalAmount = toPayNow;
+
+        $("#subtotal").text(`₹${subtotal.toFixed(2)}`);
+        $("#to-pay").text(`₹${toPayNow.toFixed(2)}`);
+        $("#total-amount").text(`₹${totalAmount.toFixed(2)}`);
+    }
+
+    // Initial Cart Totals Calculation
+    updateCartTotals();
+
+    // Remove item from cart
+    $(".remove-from-cart").click(function () {
+        let cartId = $(this).data("cart-id");
+        let row = $(this).closest("tr");
+
+        $.ajax({
+            url: "remove_from_cart.php",
+            type: "POST",
+            data: { cart_id: cartId },
+            success: function (response) {
+                if (response === "success") {
+                    row.remove(); // Remove row from table
+                    updateCartTotals(); // Recalculate totals
+
+                    // If cart is empty, show the empty cart message dynamically
+                    if ($("tbody tr").length === 0) {
+                        $("#cart-content").html(`
+                            <div class="empty-cart">
+                                <img src="img/empty_cart.png" alt="Empty Cart">
+                                <h3>Looks like you have not added anything to your cart.</h3>
+                                <p>Go ahead and explore top designs.</p>
+                                <a href="kitchen.php" class="explore-btn">Explore Designs</a>
+                            </div>
+                        `);
+                    }
+                }
+            }
+        });
+    });
+});
+$(".checkout-btn").click(function() {
+        window.location.href = "payment.php";
+    });
+</script>
     <footer>
         <div class="footer-top">
             <div class="container">
@@ -550,15 +677,6 @@
                 </div>
             </div>
         </div>
-<div class="floating-buttons">
-    <a href="https://wa.me/7204941908" class="whatsapp-button" target="_blank">
-        <i class="fab fa-whatsapp"></i> WhatsApp
-    </a>
-    <a href="mailto:contact@company.com" class="mail-button">
-        <i class="fas fa-envelope"></i> Send Mail
-    </a>
-    <a class="free_estimate" onclick="openEstimateForm()">Free Estimate</a>
-</div>
-</footer>
+    </footer>
 </body>
 </html>

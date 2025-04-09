@@ -1,11 +1,43 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+
+$conn = new mysqli("localhost", "root", "", "interior_solutions");
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch bookings for this user
+$sql = "SELECT id, design_image, design_name, design_price, amount_paid, remaining_amount, payment_method, status
+        FROM bookings
+        WHERE user_id = ?
+        ORDER BY created_at DESC";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$orders = [];
+while ($row = $result->fetch_assoc()) {
+    $orders[] = $row;
+}
+$stmt->close();
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
+  <meta charset="UTF-8">
+  <title>My Orders</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
@@ -139,144 +171,117 @@
         .logout-btn:hover {
             background-color: rgb(66, 119, 121);
         }
-        
-        .hero {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: url('img/gallery.jpg') no-repeat center center/cover;
-            padding: 100px 50px;
-            height: 60vh;
-            color: white;
-            position: relative;
-        }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 0;
-        }
+        /* Orders Page Container */
+    .order-container {
+      text-align: center;
+      margin: 50px auto;
+      width: 80%;
+    }
+    .order-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    .order-header img {
+      width: 100px;
+      margin-right: 10px;
+    }
+    .order-header h1 {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 0;
+    }
+    /* Table Styling (similar to cart page) */
+    .order-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 15px; /* Adds space between rows */
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .order-table th, .order-table td {
+      padding: 15px;
+      text-align: center;
+      border: none; /* No borders between cells */
+      vertical-align: middle;
+    }
+    .order-table th {
+      background-color: #343a40;
+      color: white;
+      font-weight: bold;
+    }
+    .order-table tbody tr {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 10px;
+      display: table-row;
+    }
+    .order-table tbody tr:last-child {
+      margin-bottom: 0;
+    }
+    /* Order Image */
+    .order-image {
+      width: 230px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+    /* Cancel Button */
+    .btn-cancel-order {
+      padding: 8px 15px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn-cancel-order:hover {
+      background-color: darkred;
+    }
+    /* Empty Orders Styles (like empty cart) */
+    .empty-order {
+      text-align: center;
+      margin: 100px auto;
+    }
+    .empty-order img {
+      width: 200px;
+      margin-bottom: 20px;
+    }
+    .empty-order h3 {
+      font-size: 22px;
+      margin-top: 20px;
+      color: #555;
+    }
+    .empty-order p {
+      color: #777;
+      font-size: 16px;
+    }
+    .explore-btn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: rgb(27, 40, 42);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .explore-btn:hover {
+      background-color: rgb(66, 119, 121);
+    }
 
-        .hero .text {
-            position: relative;
-            z-index: 1;
-            max-width: 500px;
-        }
-
-        .hero h1 {
-            font-size: 42px;
-            margin-bottom: 15px;
-        }
-
-        .hero p {
-            font-size: 32px;
-            margin-bottom: 20px;
-        }
-
-        /* Popup Form */
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .popup {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            width: 430px;
-            text-align: center;
-            position: relative;
-        }
-
-        .popup-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .popup h2 {
-            font-size: 22px;
-            margin: 0;
-            color: #333;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #555;
-        }
-
-        .popup p {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        /* Form Styling */
-        form input,
-        .phone-input {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .phone-input {
-            display: flex;
-            align-items: center;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .phone-input select {
-            border: none;
-            background: #f3f3f3;
-            padding: 10px;
-            font-size: 14px;
-        }
-
-        .phone-input input {
-            flex: 1;
-            border: none;
-            padding: 10px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            background: rgb(27, 40, 42);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .submit-btn:hover {
-            background: rgb(66, 119, 121);
-        }
-        
         footer {
             background-color: #f2f2f2;
             color: #333;
             padding-top: 20px;
+            margin-top: 40px; /* small top margin so it doesn't stick to table */
         }
 
         footer .footer-top {
@@ -323,41 +328,6 @@
 
         footer .footer-bottom a:hover {
             color: #ddd;
-        }
-
-        .floating-buttons {
-            position: fixed;
-            bottom: 100px; /* Move above the footer */
-            right: 20px;
-            z-index: 999; /* Ensure it doesn't overlap essential elements */
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .floating-buttons a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color:rgb(27, 40, 42);
-            color: white;
-            padding: 12px 18px;
-            border-radius: 50px;
-            font-size: 14px;
-            text-decoration: none;
-            font-weight: 500;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .floating-buttons a:hover {
-            background-color:rgb(66, 119, 121);
-            transform: translateY(-3px);
-        }
-
-        .floating-buttons a i {
-            margin-right: 8px;
-            font-size: 18px;
         }
 
         footer .footer-bottom {
@@ -411,9 +381,9 @@
 </head>
 <body>
     <header>
-    <div class="logo">
-        <a href="dashboard.php"><img src="img/interior.png" alt="Interior Solutions Logo"></a>
-    </div>
+        <div class="logo">
+            <a href="dashboard.php"><img src="img/interior.png" alt="Interior Solutions Logo"></a>
+        </div>
         <nav>
             <a href="dashboard.php">Home</a>
             <div class="dropdown">
@@ -424,8 +394,7 @@
                 </ul>
             </div>
             <a href="about_us.php">About Us</a>
-            <!-- Products Dropdown -->
-             <div class="dropdown">
+            <div class="dropdown">
                 <a href="#" class="dropdown-toggle">Products</a>
                 <ul class="dropdown-menu">
                     <li><a href="kitchen.php">Kitchen</a></li>
@@ -436,11 +405,11 @@
                     <li><a href="kids_room.php">Kids Room</a></li>
                 </ul>
             </div>
-            <a href="gallery.php" class="active">Gallery</a>
+            <a href="gallery.php">Gallery</a>
             <a href="contact.php">Contact</a>
-            <a href="orders.php">Orders</a>
+            <a href="#">Orders</a>
         </nav>
-
+    
         <!-- Wishlist and Cart Icons -->
         <div class="nav-icons">
             <a href="wishlist.php" class="wishlist-icon">
@@ -451,44 +420,81 @@
             </a>
         </div>
 
-    <a href="logout.php" class="logout-btn">Logout</a>
+        <a href="logout.php" class="logout-btn">Logout</a>
     </header>
-    <div class="hero">
-        <div class="text">
-            <h1>YOUR HOME. OUR DESIGN</h1>
-            <p>Expertly crafted interiors by professionals</p>
+    <div class="container mt-5">
+    <div class="order-container">
+      <div class="order-header">
+        <img src="img/orders.png" alt="Order Logo">
+        <h1>My Orders</h1>
+      </div>
+      <?php if (empty($orders)): ?>
+        <div class="empty-order">
+          <img src="img/empty_orders.png" alt="Empty Orders">
+          <h3>Looks like you have no orders yet.</h3>
+          <p>Go ahead and explore top designs.</p>
+          <a href="kitchen.php" class="explore-btn">Explore Designs</a>
         </div>
+      <?php else: ?>
+        <table class="table order-table">
+          <thead>
+            <tr>
+              <th>Design</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Amount Paid</th>
+              <th>Remaining</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($orders as $order): ?>
+              <tr data-booking-id="<?= $order['id'] ?>">
+                <td>
+                  <img src="<?= htmlspecialchars($order['design_image']) ?>" alt="Design Image" class="order-image">
+                </td>
+                <td><?= htmlspecialchars($order['design_name']) ?></td>
+                <td>₹<?= number_format($order['design_price'], 2) ?></td>
+                <td>₹<?= number_format($order['amount_paid'], 2) ?></td>
+                <td>₹<?= number_format($order['remaining_amount'], 2) ?></td>
+                <td><?= htmlspecialchars($order['status']) ?></td>
+                <td>
+                  <?php if ($order['status'] !== 'Cancelled'): ?>
+                    <button class="btn btn-danger btn-cancel-order" data-booking-id="<?= $order['id'] ?>">Cancel</button>
+                  <?php else: ?>
+                    <span class="text-muted">Already Cancelled</span>
+                  <?php endif; ?>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      <?php endif; ?>
     </div>
-    <!-- Free Estimate Popup -->
-    <div class="popup-overlay" id="popupFloatingForm">
-        <div class="popup">
-            <div class="popup-header">
-                <h2>GET FREE ESTIMATE</h2>
-                <button class="close-btn" onclick="closeForm('popupFloatingForm')">×</button>
-            </div>
-            <hr>
-            <p>Please fill out the enquiry below and we will get back to you as soon as possible</p>
-            <form id="enquiryFloatingForm" onsubmit="submitForm(event, 'free_estimate')">
-                <input type="text" name="name" placeholder="Name" required>
-            
-                <div class="phone-input">
-                    <select>
-                        <option value="+91">🇮🇳 +91</option>
-                        <option value="+1">🇺🇸 +1</option>
-                        <option value="+44">🇬🇧 +44</option>
-                        <option value="+61">🇦🇺 +61</option>
-                    </select>
-                    <input type="tel" name="phone" placeholder="Contact Number" required>
-                </div>
-
-                <input type="email" name="email" placeholder="Email Address" required>
-                <input type="text" name="project_location" placeholder="Project Location" required>
-                <button type="submit" class="submit-btn">Submit</button>
-            </form>
-        </div>
-    </div>
-    <!-- Single Script File -->
-    <script src="popupForms.js"></script>
+  </div>
+<script>
+    // Cancel Order AJAX
+    $(document).on("click", ".btn-cancel-order", function() {
+      let bookingId = $(this).data("booking-id");
+      if (!confirm("Are you sure you want to cancel this order?")) {
+        return;
+      }
+      $.ajax({
+        url: "cancel_order.php",
+        type: "POST",
+        data: { booking_id: bookingId },
+        success: function(response) {
+          if (response.trim() === "success") {
+            alert("Order Cancelled.");
+            location.reload();
+          } else {
+            alert("Failed to cancel order: " + response);
+          }
+        }
+      });
+    });
+</script>
     <footer>
         <div class="footer-top">
             <div class="container">
@@ -550,15 +556,6 @@
                 </div>
             </div>
         </div>
-<div class="floating-buttons">
-    <a href="https://wa.me/7204941908" class="whatsapp-button" target="_blank">
-        <i class="fab fa-whatsapp"></i> WhatsApp
-    </a>
-    <a href="mailto:contact@company.com" class="mail-button">
-        <i class="fas fa-envelope"></i> Send Mail
-    </a>
-    <a class="free_estimate" onclick="openEstimateForm()">Free Estimate</a>
-</div>
-</footer>
+    </footer>
 </body>
 </html>

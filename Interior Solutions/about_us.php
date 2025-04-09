@@ -21,15 +21,18 @@
             padding: 15px 30px;
         }
 
+        /* Logo */
         .logo img {
             height: 50px;
             object-fit: cover;
         }
 
+        /* Center the navigation */
         nav {
             display: flex;
             align-items: center;
-            justify-content: space-evenly;
+            justify-content: center; /* Centering navigation */
+            flex-grow: 1; /* Allows nav to take up available space */
             background-color: #f2f2f2;
             padding: 5px 0;
             height: 50px;
@@ -44,24 +47,25 @@
             border-radius: 4px;
             white-space: nowrap;
         }
-        
+
         nav a.active {
             font-weight: bold;
             text-decoration: underline;
         }
-        
+
         nav a:hover, .dropdown:hover {
             background-color: #ddd;
         }
-        
+
+        /* Dropdown Menu */
         .dropdown {
             position: relative;
         }
-        
+
         .dropdown .dropdown-toggle {
             cursor: pointer;
         }
-        
+
         .dropdown-menu {
             display: none;
             position: absolute;
@@ -94,8 +98,34 @@
             display: block;
         }
 
+        /* Move icons closer to the logout button */
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 20px; /* Reduced gap to bring them closer */
+            margin-right: 20px; /* Moves them slightly to the right */
+        }
+
+        /* Styling for Wishlist & Cart Icons */
+        .nav-icons a {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-icons img {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .nav-icons img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Logout Button */
         .logout-btn {
-            background-color:rgb(27, 40, 42);
+            background-color: rgb(27, 40, 42);
             color: white;
             border: none;
             padding: 8px 12px;
@@ -103,10 +133,11 @@
             font-size: 14px;
             cursor: pointer;
             text-decoration: none;
+            margin-left: 10px; /* Moves it slightly for better spacing */
         }
 
         .logout-btn:hover {
-            background-color:rgb(66, 119, 121);
+            background-color: rgb(66, 119, 121);
         }
 
         nav a.active {
@@ -246,6 +277,102 @@
         .testimonials .testimonial p {
             color: #666;
         }
+
+        /* Popup Form */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .popup {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            width: 430px;
+            text-align: center;
+            position: relative;
+        }
+
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .popup h2 {
+            font-size: 22px;
+            margin: 0;
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #555;
+        }
+
+        .popup p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* Form Styling */
+        form input,
+        .phone-input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .phone-input {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .phone-input select {
+            border: none;
+            background: #f3f3f3;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .phone-input input {
+            flex: 1;
+            border: none;
+            padding: 10px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: rgb(27, 40, 42);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: rgb(66, 119, 121);
+        }
+
         footer {
     background-color: #f2f2f2;
     color: #333;
@@ -411,7 +538,19 @@ footer .footer-bottom .social-links a img:hover {
             </div>
             <a href="gallery.php">Gallery</a>
             <a href="contact.php">Contact</a>
+            <a href="orders.php">Orders</a>
         </nav>
+
+        <!-- Wishlist and Cart Icons -->
+    <div class="nav-icons">
+        <a href="wishlist.php" class="wishlist-icon">
+            <img src="img/heart.png" alt="Wishlist">
+        </a>
+        <a href="cart.php" class="cart-icon">
+            <img src="img/cart.png" alt="Cart">
+        </a>
+    </div>
+    
     <a href="logout.php" class="logout-btn">Logout</a>
 </header>
 
@@ -459,24 +598,28 @@ footer .footer-bottom .social-links a img:hover {
         <h2>Our Creative Team</h2>
         <div class="team-members">
             <div class="team-member">
-                <img src="img/about1.jpg" alt="Gwen Johnson">
-                <h3>Gwen Johnson</h3>
-                <p>Founder & CEO</p>
+                <img src="img/ravi1.jpeg" alt="Gwen Johnson">
+                <h3>Ravi R</h3>
+                <p>Team Leader & Frontend Developer</p>
+                <p>Reg No - 418IS22024</p>
             </div>
             <div class="team-member">
-                <img src="img/about2.jpg" alt="Daniel Roberto">
-                <h3>Daniel Roberto</h3>
-                <p>Regional Manager</p>
+                <img src="img/tejas.jpeg" alt="Daniel Roberto">
+                <h3>Tejas C</h3>
+                <p>Frontend Developer</p>
+                <p>Reg No - 418IS22030</p>
             </div>
             <div class="team-member">
-                <img src="img/about4.jpg" alt="Dhony Abraham">
-                <h3>Dhony Abraham</h3>
-                <p>Managing Partner</p>
+                <img src="img/pushkar.jpeg" alt="Dhony Abraham">
+                <h3>Pushkar KP</h3>
+                <p>Backend Developer</p>
+                <p>Reg No - 418IS22022</p>
             </div>
             <div class="team-member">
-                <img src="img/about3.jpg" alt="Marko Dugonji">
-                <h3>Marko Dugonji</h3>
-                <p>Chief Executive</p>
+                <img src="img/suraj.jpeg" alt="Marko Dugonji">
+                <h3>Suraj S</h3>
+                <p>Backend Developer</p>
+                <p>Reg No - 418IS22029</p>
             </div>
         </div>
     </div>
@@ -494,6 +637,36 @@ footer .footer-bottom .social-links a img:hover {
         </div>
     </div>
 </section>
+<!-- Free Estimate Popup -->
+<div class="popup-overlay" id="popupFloatingForm">
+    <div class="popup">
+        <div class="popup-header">
+            <h2>GET FREE ESTIMATE</h2>
+            <button class="close-btn" onclick="closeForm('popupFloatingForm')">×</button>
+        </div>
+        <hr>
+        <p>Please fill out the enquiry below and we will get back to you as soon as possible</p>
+        <form id="enquiryFloatingForm" onsubmit="submitForm(event, 'free_estimate')">
+            <input type="text" name="name" placeholder="Name" required>
+            
+            <div class="phone-input">
+                <select>
+                    <option value="+91">🇮🇳 +91</option>
+                    <option value="+1">🇺🇸 +1</option>
+                    <option value="+44">🇬🇧 +44</option>
+                    <option value="+61">🇦🇺 +61</option>
+                </select>
+                <input type="tel" name="phone" placeholder="Contact Number" required>
+            </div>
+
+            <input type="email" name="email" placeholder="Email Address" required>
+            <input type="text" name="project_location" placeholder="Project Location" required>
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+</div>
+<!-- Single Script File -->
+<script src="popupForms.js"></script>
 <footer>
         <div class="footer-top">
             <div class="container">
@@ -562,7 +735,7 @@ footer .footer-bottom .social-links a img:hover {
     <a href="mailto:contact@company.com" class="mail-button">
         <i class="fas fa-envelope"></i> Send Mail
     </a>
-    <a href="#" class="estimate-button">Free Estimate</a>
+    <a class="free_estimate" onclick="openEstimateForm()">Free Estimate</a>
 </div>
 </footer>
 </body>

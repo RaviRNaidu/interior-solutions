@@ -1,3 +1,31 @@
+<?php
+session_start(); // Ensure session is started
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "interior_solutions";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Check if user is logged in
+$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+
+// Define category and design type for this page
+$category = "living room";
+$design_type = "center table";
+
+// Fetch the first 3 designs for this category and type
+$sql = "SELECT * FROM designs WHERE category = ? AND design_type = ? LIMIT 3";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ss", $category, $design_type);
+$stmt->execute();
+$result = $stmt->get_result();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +33,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Center_Table</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -21,15 +50,18 @@
             padding: 15px 30px;
         }
 
+        /* Logo */
         .logo img {
             height: 50px;
             object-fit: cover;
         }
 
+        /* Center the navigation */
         nav {
             display: flex;
             align-items: center;
-            justify-content: space-evenly;
+            justify-content: center; /* Centering navigation */
+            flex-grow: 1; /* Allows nav to take up available space */
             background-color: #f2f2f2;
             padding: 5px 0;
             height: 50px;
@@ -44,24 +76,25 @@
             border-radius: 4px;
             white-space: nowrap;
         }
-        
+
         nav a.active {
             font-weight: bold;
             text-decoration: underline;
         }
-        
+
         nav a:hover, .dropdown:hover {
             background-color: #ddd;
         }
-        
+
+        /* Dropdown Menu */
         .dropdown {
             position: relative;
         }
-        
+
         .dropdown .dropdown-toggle {
             cursor: pointer;
         }
-        
+
         .dropdown-menu {
             display: none;
             position: absolute;
@@ -94,8 +127,34 @@
             display: block;
         }
 
+        /* Move icons closer to the logout button */
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 20px; /* Reduced gap to bring them closer */
+            margin-right: 20px; /* Moves them slightly to the right */
+        }
+
+        /* Styling for Wishlist & Cart Icons */
+        .nav-icons a {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-icons img {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .nav-icons img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Logout Button */
         .logout-btn {
-            background-color:rgb(27, 40, 42);
+            background-color: rgb(27, 40, 42);
             color: white;
             border: none;
             padding: 8px 12px;
@@ -103,10 +162,11 @@
             font-size: 14px;
             cursor: pointer;
             text-decoration: none;
+            margin-left: 10px; /* Moves it slightly for better spacing */
         }
 
         .logout-btn:hover {
-            background-color:rgb(66, 119, 121);
+            background-color: rgb(66, 119, 121);
         }
 
         /* Full-screen Hero Image */
@@ -204,6 +264,163 @@
             background-color: #427779;
         }
 
+        /* Design Popup */
+        .design-popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .design-popup {
+            background: #f2f2f2;
+            width: 70%;
+            max-width: 900px;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+            position: relative;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        /* Close Button */
+        .design-popup .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        /* PopupContent */
+        .design-popup-content {
+            display: flex;
+            height: 100%;
+            gap: 20px;
+        }
+
+        /* Left Side: Image & Description */
+        .popup-left {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .popup-left img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .popup-left p {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #444;
+            text-align: justify;
+            max-height: 175px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        /* Right Side: Details */
+        .popup-right {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .popup-right h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .popup-price {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        /* Buttons */
+        .wishlist-btn,
+        .cart-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 5px;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .wishlist-btn {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .wishlist-btn:hover {
+            background: #e04848;
+        }
+
+        .cart-btn {
+            background: #3d9dfc;
+            color: white;
+        }
+
+        .cart-btn:hover {
+            background: #287be5;
+        }
+
+        /* Stats */
+        .popup-stats {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #666;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .design-popup {
+                width: 90%;
+                height: auto;
+                max-width: 600px;
+            }
+
+            .design-popup-content {
+                flex-direction: column;
+            }
+
+            .popup-left,
+            .popup-right {
+                width: 100%;
+            }
+
+            .popup-left img {
+                height: 250px;
+            }
+
+            .popup-left p {
+                max-height: 100px;
+            }
+        }
+
         /* Contact Section */
         .contact-section {
             background-color:#f9f9f9 ; /* White  #ffffff background for the first section */
@@ -211,7 +428,7 @@
             padding: 50px 20px;
         }
 
-        .contact-btn {
+        .talk {
             display: inline-block;
             background-color: #1b282a;
             color: white;
@@ -224,7 +441,7 @@
             text-decoration: none;
         }
 
-        .contact-btn:hover {
+        .talk:hover {
             background-color: #427779;
         }
 
@@ -462,7 +679,7 @@
 <body>
     <header>
         <div class="logo">
-            <a href="#"><img src="img/interior.png" alt="Interior Solutions Logo"></a>
+            <a href="dashboard.php"><img src="img/interior.png" alt="Interior Solutions Logo"></a>
         </div>
         <nav>
             <a href="dashboard.php">Home</a>
@@ -488,7 +705,19 @@
             </div>
             <a href="gallery.php">Gallery</a>
             <a href="contact.php">Contact</a>
+            <a href="orders.php">Orders</a>
         </nav>
+
+        <!-- Wishlist and Cart Icons -->
+        <div class="nav-icons">
+            <a href="wishlist.php" class="wishlist-icon">
+                <img src="img/heart.png" alt="Wishlist">
+            </a>
+            <a href="cart.php" class="cart-icon">
+                <img src="img/cart.png" alt="Cart">
+            </a>
+        </div>
+
         <a href="logout.php" class="logout-btn">Logout</a>
     </header>
     <!-- Full-screen image -->
@@ -502,31 +731,137 @@
         <p>Centre table to be kept near the sofa set for a living room is designed and custom-made by Interior Solutions for flat or house anywhere in Pune, Hyderabad, Bangalore, Kerala, Mangalore, Mysore, Nagercoil, Chennai, Madurai and Coimbatore. Customers choose a suitable design from available on our website or showrooms and customize it further to match the requirements and space limitations.</p>
         
         <div class="image-grid" id="imageGrid">
-            <a href="page1.html" class="image-box"><img src="img/ethan.jpg" alt="Ethan"><span>Ethan</span></a>
-            <a href="page2.html" class="image-box"><img src="img/harleston.jpg" alt="Harleston"><span>Harleston</span></a>
-            <a href="page3.html" class="image-box"><img src="img/elliptica.jpg" alt="Elliptica"><span>Elliptica</span></a>
+        <?php while ($row = $result->fetch_assoc()) { ?>
+            <a href="#" class="image-box" 
+                data-id="<?php echo $row['id']; ?>" 
+                data-image="<?php echo $row['image']; ?>"
+                data-name="<?php echo $row['name']; ?>"
+                data-description="<?php echo $row['description']; ?>"
+                data-price="<?php echo $row['price']; ?>"
+                data-likes="<?php echo $row['likes']; ?>"
+                data-used="<?php echo $row['used_count']; ?>">
+                <img src="<?php echo $row['image']; ?>" alt="<?php echo $row['name']; ?>">
+                <span><?php echo $row['name']; ?></span>
+            </a>
+        <?php } ?>
         </div>
 
         <button class="load-more" id="loadMore">Load More</button>
     </section>
 
+    <script>
+        $(document).ready(function () {
+            let offset = 3;
+            let category = "living room";
+            let design_type = "center table";
+
+            function attachClickEvent() {
+                $(document).off("click", ".image-box").on("click", ".image-box", function (event) {
+                    event.preventDefault();
+                    let designId = $(this).attr("data-id"); // Get design ID
+                    let image = $(this).attr("data-image");
+                    let name = $(this).attr("data-name");
+                    let description = $(this).attr("data-description");
+                    let price = $(this).attr("data-price");
+                    let likes = $(this).attr("data-likes") || "0";
+                    let used = $(this).attr("data-used") || "0";
+
+                    openDesignPopup(image, name, description, price, likes, used, designId);
+                });
+            }
+
+        attachClickEvent();
+
+        $("#loadMore").click(function () {
+            $.ajax({
+                url: "fetch_designs.php",
+                type: "GET",
+                data: { offset: offset, category: category, design_type: design_type },
+                success: function (response) {
+                    if ($.trim(response) !== "") {
+                        $("#imageGrid").append(response);
+                        offset += 3;
+                        attachClickEvent(); // Reattach click event to newly added elements
+                    } else {
+                        $("#loadMore").hide();
+                    }
+                }
+            });
+        });
+    });
+    </script>
+
     <!-- Contact Button -->
     <div class="contact-section">
-        <button class="contact-btn" onclick="openForm()">Contact Our Interior Designer for Details</button>
+        <button class="talk" onclick="openTalkForm()">Contact Our Interior Designer for Details</button>
     </div>
 
-    <!-- Popup Form -->
+    <!-- Design Popup -->
+    <div class="design-popup-overlay" id="designPopup">
+        <div class="design-popup">
+            <button class="close-btn" onclick="closeDesignPopup()">×</button>
+            <div class="design-popup-content">
+                <!-- Left Side: Image & Description -->
+                <div class="popup-left">
+                    <img id="popupImage" src="" alt="Design Image">
+                    <p id="popupDescription"></p>
+                </div>
+
+                <!-- Right Side: Name, Price, Buttons -->
+                <div class="popup-right">
+                    <h2 id="popupTitle"></h2>
+                    <p class="popup-price">Price: ₹<span id="popupPrice"></span></p>
+                    <button class="wishlist-btn" onclick="addToWishlist(1)">Add to Wishlist</button>
+                    <button class="cart-btn" onclick="addToCart()">Add to Cart</button>
+                    <p class="popup-stats">
+                        <span id="popupLikes"></span> people liked this | 
+                        <span id="popupContacts"></span> have used this design
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Talk to Expert Popup -->
     <div class="popup-overlay" id="popupForm">
         <div class="popup">
             <div class="popup-header">
                 <h2>Contact Our Interior Designer for Details</h2>
-                <button class="close-btn" onclick="closeForm()">×</button>
+                <button class="close-btn" onclick="closeForm('popupForm')">×</button>
             </div>
             <hr>
             <p>Please fill out the enquiry below and we will get back to you as soon as possible</p>
-            <form id="enquiryForm">
-                <input type="text" placeholder="Name" required>
-                
+            <form id="enquiryForm" onsubmit="submitForm(event, 'talk_expert')">
+                <input type="text" name="name" placeholder="Name" required>
+            
+                <div class="phone-input" >
+                    <select>
+                        <option value="+91">🇮🇳 +91</option>
+                        <option value="+1">🇺🇸 +1</option>
+                        <option value="+44">🇬🇧 +44</option>
+                        <option value="+61">🇦🇺 +61</option>
+                    </select>
+                    <input type="tel" name="phone" placeholder="Contact Number" required>
+                </div>
+
+                <input type="email" name="email" placeholder="Email Address" required>
+                <input type="text" name="project_location" placeholder="Project Location" required>
+                <button type="submit" class="submit-btn">Submit</button>
+            </form>
+        </div>
+    </div>
+    <!-- Free Estimate Popup -->
+    <div class="popup-overlay" id="popupFloatingForm">
+        <div class="popup">
+            <div class="popup-header">
+                <h2>GET FREE ESTIMATE</h2>
+                <button class="close-btn" onclick="closeForm('popupFloatingForm')">×</button>
+            </div>
+            <hr>
+            <p>Please fill out the enquiry below and we will get back to you as soon as possible</p>
+            <form id="enquiryFloatingForm" onsubmit="submitForm(event, 'free_estimate')">
+                <input type="text" name="name" placeholder="Name" required>
+            
                 <div class="phone-input">
                     <select>
                         <option value="+91">🇮🇳 +91</option>
@@ -534,63 +869,17 @@
                         <option value="+44">🇬🇧 +44</option>
                         <option value="+61">🇦🇺 +61</option>
                     </select>
-                    <input type="tel" placeholder="Contact Number" required>
+                    <input type="tel" name="phone" placeholder="Contact Number" required>
                 </div>
 
-                <input type="email" placeholder="Email Address" required>
-                <input type="text" placeholder="Project Location" required>
+                <input type="email" name="email" placeholder="Email Address" required>
+                <input type="text" name="project_location" placeholder="Project Location" required>
                 <button type="submit" class="submit-btn">Submit</button>
             </form>
         </div>
     </div>
-    <script src="form.js"></script>
-
-    <script>
-        document.getElementById("loadMore").addEventListener("click", function() {
-    const grid = document.getElementById("imageGrid");
-
-    // List of images to be loaded in sequence
-    const newImagesSet = [
-        [
-            { src: "img/lucida.jpg", alt: "Lucida", link: "page4.html" },
-            { src: "img/twin.jpg", alt: "Twin", link: "page5.html" },
-            { src: "img/durian.jpg", alt: "Durian", link: "page6.html" }
-        ],
-        [
-            { src: "img/koala.jpg", alt: "Koala", link: "page7.html" },
-            { src: "img/celtic.jpg", alt: "Celtic", link: "page8.html" },
-            { src: "img/straw.jpg", alt: "Straw", link: "page9.html" }
-        ],
-        [
-            { src: "img/canella.jpg", alt: "Canella", link: "page7.html" }
-        ]
-    ];
-
-    // Keep track of how many times the button is clicked
-    if (!this.dataset.clickCount) {
-        this.dataset.clickCount = "0";
-    }
-
-    let clickCount = parseInt(this.dataset.clickCount);
-    
-    if (clickCount < newImagesSet.length) {
-        newImagesSet[clickCount].forEach(img => {
-            const anchor = document.createElement("a");
-            anchor.href = img.link;
-            anchor.classList.add("image-box");
-            anchor.innerHTML = `<img src="${img.src}" alt="${img.alt}"><span>${img.alt}</span>`;
-            grid.appendChild(anchor);
-        });
-
-        this.dataset.clickCount = (clickCount + 1).toString();
-    }
-
-    // Hide the button after all images are loaded
-    if (clickCount + 1 === newImagesSet.length) {
-        this.style.display = "none";
-    }
-});
-    </script>
+    <!-- Single Script File -->
+    <script src="popupForms.js"></script>
     <footer>
         <div class="footer-top">
             <div class="container">
@@ -659,7 +948,7 @@
     <a href="mailto:contact@company.com" class="mail-button">
         <i class="fas fa-envelope"></i> Send Mail
     </a>
-    <a href="#" class="estimate-button">Free Estimate</a>
+    <a class="free_estimate" onclick="openEstimateForm()">Free Estimate</a>
 </div>
 </footer> 
 </body>
